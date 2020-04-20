@@ -8,53 +8,20 @@
 </head>
 <body>
     <div id="app">
-        {{ msg }}
-        <!-- {{ name }} -->
-        <!-- {{ mrWang.sex }} -->
+        {{ wang }}
     </div>
     <script src="./vue.js"></script>
     <script>
         const vm = new Vue({
             el: '#app',
             data: {
-                msg: '老王真好看，真像宋小宝',
-                mrWang: {
-                    name: 'laowang',
-                    age: 80
+                wangFamily: ['老王', '小刘', '王小宝'],
+                wang: {
+                    name: '老王',
+                    age: 80,
+                    son: '王小宝'
                 }
             }
-        });
-
-        // for (let i = 0; i < 1000; i++) {
-        //     vm.msg = i;
-        // }
-
-        vm.msg = '老王真难看';
-        // console.log(vm.msg+ '----' + vm.$el.innerText);
-
-        // console.log(vm);
-        // vm.data.msg = 123
-        // vm.msg = 123
-
-        // vm.$nextTick(() => {
-        //     console.log(vm.msg, vm.$el.innerText);
-        // })
-        // Vue.nextTick(() => {
-        //     console.log(vm.msg, vm.$el.innerText);
-        // })
-
-        // vm.$nextTick().then(data => {
-        //     console.log(vm.$el.innerText);
-        // })
-        // Vue.nextTick().then(data => {
-        //     console.log(vm.$el.innerText);
-        // })
-
-        vm.$nextTick(function() {
-            console.log(this)
-        })
-        Vue.nextTick(function() {
-            console.log(this);
         })
     </script>
 </body>
