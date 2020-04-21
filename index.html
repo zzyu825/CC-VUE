@@ -5,192 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <style>
-        [v-cloak] {
-            display: none;
-        }
-    </style>
 </head>
 <body>
     <div id="app">
-        <div v-pre>
-            <p>我不需要被编译{{ msg }}</p>
-        </div>
-        <div v-cloak>
-            我可能会闪烁{{ msg }}
-        </div>
-        <div v-once>
-            我只需要被编译一次{{ msg }}
-        </div>
-        <div>
-            数据更新，我就要被编译{{ msg }}
-        </div>
-        <div v-text="msg1">
-            我这里要被全部替换{{ msg }}
-        </div>
-        <div>
-            只替换后面的{{ msg1 }}
-        </div>
-        <div v-html="msg2">
-            我要被插入的html替换{{ msg }}
-        </div>
-        
-        <div id="content" v-html="msg"></div>
+        <!-- <div v-if="show">条件成立显示我</div>
+        <div v-else-if="A">条件2成立</div>
+        <div v-else-if="B === 'abc'">条件3成立</div>
+        <span>中间隔一个兄弟元素</span>
+        <div v-else>没有任何条件成立</div> -->
+
+        <template v-if="show">
+            <!-- <div v-if="show"></div>
+            <div v-if="show"></div>
+            <div v-if="show"></div> -->
+            <div>统一被控制</div>
+            <div>统一被控制</div>
+            <div>统一被控制</div>
+        </template>
+
+        <div v-show="1 === 2">我只是切换样式的显示隐藏</div>
+        <div v-if="1 === 2">我切换的是元素本身是否存在</div>
     </div>
-    <!-- <div id="text">
-        1
-        <p>
-            2
-            <span style="display: none">3</span>
-        </p>
-        <script>
-            let a;
-        </script>
-        <style>
-            a {}
-        </style>
-    </div> -->
-    <!-- <ul>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-    </ul> -->
-    <input type="text">
-    <button>提交</button>
+    
     <script src="./vue.js"></script>
     <script>
         const vm = new Vue({
             el: '#app',
             data: {
-                msg: 'hello vue',
-                msg1: 'hello world',
-                msg2: '<p>html字符串</p>'
+                show: ' ',
+                A: 123,
+                B: 'abc'
             }
         });
-
-        // const div = document.getElementById("text");
-        // div.innerText = '4';
-        // div.textContent = '4';
-        // console.log(div.innerText);
-        // console.log(div.textContent);
-
-        // const lis = document.getElementsByTagName("li");
-        // console.time('innerText');
-        // for (const li of lis) {
-        //     li.innerText = 1
-        // }
-        // console.timeEnd('innerText');
-
-        // console.time('contentText');
-        // for (const li of lis) {
-        //     li.contentText = 1
-        // }
-        // console.timeEnd('contentText');
-
-        const inp = document.querySelector('input');
-        const btn = document.querySelector('button');
-        const con = document.getElementById('content');
-        btn.onclick = () => {
-            vm.msg = inp.value
-        }
-        // 输入框输入：<img src='' onerror='while(1){alert("haha")}'/>
     </script>
 </body>
 </html>
