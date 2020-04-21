@@ -8,53 +8,74 @@
 </head>
 <body>
     <div id="app">
-        <!-- <button v-on:click="count += 1">点击加1</button> -->
-        <!-- <button v-on:click="add">点击加1</button> -->
-        <!-- <button v-on:click="add(5, $event)">点击加5</button> -->
-        <!-- <button @[event]="add(5, $event)">点击加5</button> -->
-        <!-- <p>按钮被点击了 {{ count }}</p> -->
+        <!-- <div @click="alert('div')" :style="box">
+            <button @click.stop="alert('button')">按钮</button>
+        </div> -->
 
-        <div v-on="{mouseenter: me, mouseleave: ml}" :style="box"></div>
+        <!-- <form @submit.prevent="submit">
+            <input type="submit" value="提交">
+        </form> -->
+        <!-- <form @submit.prevent>
+            <input type="submit" value="提交">
+        </form> -->
+
+        <!-- <div @click.capture="alert('div')" :style="box">
+            <button @click="alert('button')">按钮</button>
+        </div> -->
+
+        <!-- <div @click.self="alert('div')" :style="box">
+            <button @click="alert('button')">按钮</button>
+        </div> -->
+
+        <!-- <div @click.once="alert('div')" :style="box"></div> -->
+
+        <!-- <div @click.passive="alert('div')" :style="box"></div> -->
+
+        <input type="text" @keyup.enter="submit">
+        <input type="text" @keyup.caps-lock="submit">
+        <!-- 空格按键码 32 -->
+        <input type="text" @keyup.32="submit">
+        <!-- 空格按键码别名 vue提供 -->
+        <input type="text" @keyup.space="submit">
+
+        <!-- 回车键别名 自定义 -->
+        <input type="text" @keyup.huiche="submit">
+        <!-- 空格键别名 自定义 -->
+        <input type="text" @keyup.kong-ge="submit">
+
+        <!-- <input type="text" @keyup.ctrl="submit">
+        <input type="text" @keyup.ctrl.67="submit">
+        <input type="text" @click.ctrl="submit"> -->
+
+        <!-- <input type="text" @click.ctrl="submit">
+        <input type="text" @click.ctrl.exact="submit"> -->
+
+        <div @click.right="alert('鼠标点击')" :style="box"></div>
     </div>
     
     <script src="./vue.js"></script>
     <script>
+        // 自定义回车键别名
+        // Vue.config.keyCodes.huiche = 13;
+        Vue.config.keyCodes = {
+            huiche: 13,
+            'kong-ge': 32
+        }
         const vm = new Vue({
             el: '#app',
             data: {
-                count: 0,
-                // add() {
-                //     // this 指向 window
-                //     // console.log(this);
-                //     vm.count += 1;
-                // }
-                event: 'click',
                 box: {
                     width: '100px',
                     height: '100px',
-                    backgroundColor: '#0f0'
+                    backgroundColor: 'red'
                 }
             },
-            methods: {
-                add(num, e) {
-                    // this 指向 vue实例
-                    this.count += num;
-                    // 不传参数，默认第一个形参为事件对象
-                    // console.log(e.target);
-                    // 有传实参，第二个形参是undefined，不再是事件对象，除非另写实参$event传递
-                    console.log(e);
-                    // 为什么代理给实例对象
-                    // this.xxx.a()
-                    this.a();
+            methods: { 
+                alert(str) {
+                    alert(str);
                 },
-                a() {
-                    console.log('a');
-                },
-                me() {
-                    console.log('移入')
-                },
-                ml() {
-                    console.log('移出')
+                submit() {
+                    console.log('表单默认提交')
                 }
             }
         });
