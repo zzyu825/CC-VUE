@@ -5,51 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <style>
-        .red {
-            color: #f00;
-        }
-        .red1 {
-            color: #f30;
-        }
-        .red2 {
-            color: #f60;
-        }
-        .green {
-            color: #0f0;
-        }
-    </style>
 </head>
 <body>
     <div id="app">
-        <!-- <div v-bind:name="attr1"></div>
-        <div v-bind:[name]="attr1"></div>
-        <div :age="attr2"></div> -->
+        <!-- <button v-on:click="count += 1">点击加1</button> -->
+        <!-- <button v-on:click="add">点击加1</button> -->
+        <!-- <button v-on:click="add(5, $event)">点击加5</button> -->
+        <!-- <button @[event]="add(5, $event)">点击加5</button> -->
+        <!-- <p>按钮被点击了 {{ count }}</p> -->
 
-        <!-- <img :src="imgSrc" alt="">
-        <img :src="'https://' + imgUrl" alt="">
-        <img :src=`https://${imgUrl}` alt=""> -->
-
-        <!-- <div v-bind="{ id: 'box', name: attr1, 'attr-name': attr1, class: name }"></div>
-        <img v-bind="{ src: imgSrc}"> -->
-
-        <!-- <div :class="red">字符串</div>
-        <div :class="'red' + num">字符串拼接</div>
-        <div :class="{red2: isRed}">对象</div>
-        <div :class="[red, green]">数组</div>
-        <div :class="[1 === 2 ? red : green, green]">数组中使用三元运算符</div>
-        <div :class="[red, { green: isGreen }]">数组中使用对象</div>
-        <div :class="red" class="green">共存</div> -->
-
-        <!-- <div :style="{color: green, fontSize: size + 'px', 'background-color': 'red'}">对象绑定</div>
-        <div :style="styleObj">数据绑定</div>
-        <div :style="[styleObj, styleObj1]">数据数组绑定</div> -->
-
-        <!-- <div :style="[styleObj, {transform: 'translateX(90px)'}]">vue-cli中自动加前缀</div>
-        <div :style="{display: ['-webkit-box', '-ms-flexbox', 'flex']}">多重值</div> -->
-
-        <svg :view-box.camel="viewBox"></svg>
-        <span :text-content.prop="text"></span>
+        <div v-on="{mouseenter: me, mouseleave: ml}" :style="box"></div>
     </div>
     
     <script src="./vue.js"></script>
@@ -57,34 +22,42 @@
         const vm = new Vue({
             el: '#app',
             data: {
-                attr1: 'abc',
-                name: 'name1',
-                attr2: 18,
-                imgSrc: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587468222963&di=858f93d08df626c04817d141cb80da5c&imgtype=0&src=http%3A%2F%2Fn.sinaimg.cn%2Fsinacn15%2F215%2Fw590h425%2F20181004%2F6894-hkrzyam8348736.jpg',
-                imgUrl: 'timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587468222963&di=858f93d08df626c04817d141cb80da5c&imgtype=0&src=http%3A%2F%2Fn.sinaimg.cn%2Fsinacn15%2F215%2Fw590h425%2F20181004%2F6894-hkrzyam8348736.jpg',
-                red: 'red',
-                num: 1,
-                isRed: 123,
-                green: 'green',
-                isGreen: true,
-                size: 20,
-                styleObj: {
-                    color: 'green',
-                    fontSize: '20px',
-                    'background-color': 'red'
+                count: 0,
+                // add() {
+                //     // this 指向 window
+                //     // console.log(this);
+                //     vm.count += 1;
+                // }
+                event: 'click',
+                box: {
+                    width: '100px',
+                    height: '100px',
+                    backgroundColor: '#0f0'
+                }
+            },
+            methods: {
+                add(num, e) {
+                    // this 指向 vue实例
+                    this.count += num;
+                    // 不传参数，默认第一个形参为事件对象
+                    // console.log(e.target);
+                    // 有传实参，第二个形参是undefined，不再是事件对象，除非另写实参$event传递
+                    console.log(e);
+                    // 为什么代理给实例对象
+                    // this.xxx.a()
+                    this.a();
                 },
-                styleObj1: {
-                    color: 'yellow'
+                a() {
+                    console.log('a');
                 },
-                viewBox: '0 0 100 100',
-                text: '绑定dom对象属性'
+                me() {
+                    console.log('移入')
+                },
+                ml() {
+                    console.log('移出')
+                }
             }
         });
-        const div = document.getElementById("app");
-        console.dir(div)
-        for (const prop in div) {
-            console.log(prop)
-        }
     </script>
 </body>
 </html>
