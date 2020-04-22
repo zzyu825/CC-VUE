@@ -6,20 +6,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
 </head>
 
 <body>
     <div id="app">
-        <input type="number" v-model.number.lazy="num1">
-        <select v-model="op">
-            <option>+</option>
-            <option>-</option>
-            <option>*</option>
-            <option>/</option>
-        </select>
-        <input type="number" v-model.number.lazy="num2">
-        <button @click="calc">=</button>
-        <span>{{ result }}</span>
+        <div class="area" v-for="area in 2">
+            <h2>{{ area === 1 ? '提问区' : '回答展示区' }}</h2>
+            <ul>
+                <li v-for="item of question" :key="item.id">
+                    <h3>{{ item.title }}</h3>
+                    <!-- 简答 -->
+                    <div v-if="item.type === 'short'">
+                        <input type="text" v-if="area === 1" v-model.lazy="item.answer">
+                        <span v-else>{{ item.answer }}</span>
+                    </div>
+                    <!-- 单选 -->
+                    <div v-else-if="item.type === 'single'">
+                        <template v-if="area === 1">
+                            <div v-for="(choose, index) in item.chooseList">
+                                <input type="radio" :value="choose" v-model="item.answer" :id="index">
+                                <label :for="index">{{ choose }}</label>
+                            </div>
+                        </template>
+                        <span v-else>{{ item.answer }}</span>
+                    </div>
+                    <!-- 多选 -->
+                    <div v-else-if="item.type === 'multiple'">
+                        <template v-if="area === 1">
+                            <div v-for="(choose, index) in item.chooseList">
+                                <input type="checkbox" :value="choose" v-model="item.answer" :id="index">
+                                <label :for="index">{{ choose }}</label>
+                            </div>
+                        </template>
+                        <span v-else>{{ item.answer && item.answer.toString() }}</span>
+                    </div>
+                    <!-- 介绍 -->
+                    <div v-else>
+                        <textarea v-if="area === 1" v-model.lazy="item.answer"></textarea>
+                        <span v-else>{{ item.answer }}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <script src="./vue.js"></script>
@@ -27,30 +56,45 @@
         const vm = new Vue({
             el: '#app',
             data: {
-                num1: 0,
-                num2: 0,
-                op: '+',
-                result: 0
-            },
-            methods: {
-                calc() {
-                    let { num1, num2, op } = this;
-                    switch (op) {
-                        case '+':
-                            this.result = num1 + num2
-                            break;
-                        case '-':
-                            this.result = num1 - num2
-                            break;
-                        case '*':
-                            this.result = num1 * num2
-                            break;
-                        case '/':
-                            this.result = num1 / num2
-                            break;
+                question: [
+                    {
+                        type: 'short',
+                        title: '1.请问你的姓名是？',
+                        id: 0
+                    },
+                    {
+                        type: 'single',
+                        title: '2.请问您的性别是？',
+                        chooseList: [
+                            '男',
+                            '女',
+                            '保密',
+                        ],
+                        id: 1
+                    },
+                    {
+                        type: 'multiple',
+                        title: '3. 请选择您的兴趣爱好：',
+                        chooseList: [
+                            '看书',
+                            '游泳',
+                            '跑步',
+                            '看电影',
+                            '听音乐',
+                        ],
+                        id: 2
+                    },
+                    {
+                        type: 'long',
+                        title: '4. 请介绍一下自己:',
+                        id: 3
                     }
-                }
+                ]
             }
+        });
+        vm.question.forEach(ele => {
+            const answer = ele.type === 'multiple' ? [] : '';
+            vm.$set(ele, 'answer', answer);
         });
     </script>
 </body>
