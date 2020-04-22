@@ -8,74 +8,88 @@
 </head>
 <body>
     <div id="app">
-        <!-- <div @click="alert('div')" :style="box">
-            <button @click.stop="alert('button')">按钮</button>
-        </div> -->
+        <!-- <ul>
+            <li v-for="item in arr">{{ item }}</li>
+        </ul>
+        <ul>
+            <li v-for="(item, index) of person">
+                {{ item.name }} -- {{ item.age }} -- {{ index }}
+            </li>
+        </ul> -->
 
-        <!-- <form @submit.prevent="submit">
-            <input type="submit" value="提交">
-        </form> -->
-        <!-- <form @submit.prevent>
-            <input type="submit" value="提交">
-        </form> -->
+        <!-- <ul>
+            <li v-for="(value, key, index) of obj">
+                {{ key }} -- {{ value }} -- {{ index }}
+            </li>
+        </ul> -->
 
-        <!-- <div @click.capture="alert('div')" :style="box">
-            <button @click="alert('button')">按钮</button>
-        </div> -->
+        <!-- <ul>
+            <li v-for="num of number">{{ num }}</li>
+        </ul> -->
 
-        <!-- <div @click.self="alert('div')" :style="box">
-            <button @click="alert('button')">按钮</button>
-        </div> -->
+        <!-- <ul>
+            <li v-for="str of 'hello world'">{{ str }}</li>
+        </ul> -->
 
-        <!-- <div @click.once="alert('div')" :style="box"></div> -->
+        <!-- <p v-for="item of person">{{ item.name }}</p>
+        <p v-for="item of person">{{ item.age }}</p> -->
+        <!-- <template v-for="item of person">
+            <p>{{ item.name }}</p>
+            <p>{{ item.age }}</p>
+        </template> -->
+        
 
-        <!-- <div @click.passive="alert('div')" :style="box"></div> -->
+        <!-- <ul>
+            <li v-for="item, index of person" :key="item.name">
+                {{ item.name }}
+                <input type="text">
+                <button @click="change(index)">下移</button>
+            </li>
+        </ul> -->
+        <!-- <li v-for="item, index of arr" :key="item">{{ item }}</li>
+        <button @click="reverse">反序</button> -->
 
-        <input type="text" @keyup.enter="submit">
-        <input type="text" @keyup.caps-lock="submit">
-        <!-- 空格按键码 32 -->
-        <input type="text" @keyup.32="submit">
-        <!-- 空格按键码别名 vue提供 -->
-        <input type="text" @keyup.space="submit">
+        <!-- <button @click="show = !show">{{ show ? '显示' : '隐藏' }}</button>
+        <input type="text" v-if="show" value="1" key="a">
+        <input type="text" v-else value="2" key="b"> -->
 
-        <!-- 回车键别名 自定义 -->
-        <input type="text" @keyup.huiche="submit">
-        <!-- 空格键别名 自定义 -->
-        <input type="text" @keyup.kong-ge="submit">
-
-        <!-- <input type="text" @keyup.ctrl="submit">
-        <input type="text" @keyup.ctrl.67="submit">
-        <input type="text" @click.ctrl="submit"> -->
-
-        <!-- <input type="text" @click.ctrl="submit">
-        <input type="text" @click.ctrl.exact="submit"> -->
-
-        <div @click.right="alert('鼠标点击')" :style="box"></div>
+        <li 
+            v-for="item of person"
+            v-if="item.isActive"
+        >
+            {{ item.name }}
+        </li>
     </div>
     
     <script src="./vue.js"></script>
     <script>
-        // 自定义回车键别名
-        // Vue.config.keyCodes.huiche = 13;
-        Vue.config.keyCodes = {
-            huiche: 13,
-            'kong-ge': 32
-        }
         const vm = new Vue({
             el: '#app',
             data: {
-                box: {
-                    width: '100px',
-                    height: '100px',
-                    backgroundColor: 'red'
+                number: 10,
+                show: true,
+                arr: ['hello', 'vue'],
+                person: [
+                    {name: '小明', age: 15, isActive: true},
+                    {name: '小李', age: 16, isActive: false},
+                    {name: '小王', age: 17, isActive: true},
+                    {name: '小红', age: 18, isActive: false},
+                ],
+                obj: {
+                    name: '小明',
+                    age: 15,
+                    sex: 'male'
                 }
             },
             methods: { 
-                alert(str) {
-                    alert(str);
+                change(i) {
+                    const newArr = this.person.splice(i, 1);
+                    // console.log(newArr);
+                    this.person.splice(++i, 0, ...newArr);
+                    // console.log(this.person);
                 },
-                submit() {
-                    console.log('表单默认提交')
+                reverse() {
+                    this.arr.reverse();
                 }
             }
         });
