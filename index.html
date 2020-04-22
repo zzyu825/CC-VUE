@@ -1,98 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
 </head>
+
 <body>
     <div id="app">
-        <!-- <ul>
-            <li v-for="item in arr">{{ item }}</li>
-        </ul>
-        <ul>
-            <li v-for="(item, index) of person">
-                {{ item.name }} -- {{ item.age }} -- {{ index }}
-            </li>
-        </ul> -->
-
-        <!-- <ul>
-            <li v-for="(value, key, index) of obj">
-                {{ key }} -- {{ value }} -- {{ index }}
-            </li>
-        </ul> -->
-
-        <!-- <ul>
-            <li v-for="num of number">{{ num }}</li>
-        </ul> -->
-
-        <!-- <ul>
-            <li v-for="str of 'hello world'">{{ str }}</li>
-        </ul> -->
-
-        <!-- <p v-for="item of person">{{ item.name }}</p>
-        <p v-for="item of person">{{ item.age }}</p> -->
-        <!-- <template v-for="item of person">
-            <p>{{ item.name }}</p>
-            <p>{{ item.age }}</p>
-        </template> -->
-        
-
-        <!-- <ul>
-            <li v-for="item, index of person" :key="item.name">
-                {{ item.name }}
-                <input type="text">
-                <button @click="change(index)">下移</button>
-            </li>
-        </ul> -->
-        <!-- <li v-for="item, index of arr" :key="item">{{ item }}</li>
-        <button @click="reverse">反序</button> -->
-
-        <!-- <button @click="show = !show">{{ show ? '显示' : '隐藏' }}</button>
-        <input type="text" v-if="show" value="1" key="a">
-        <input type="text" v-else value="2" key="b"> -->
-
-        <li 
-            v-for="item of person"
-            v-if="item.isActive"
-        >
-            {{ item.name }}
-        </li>
+        <div 
+            class="goods" 
+            v-for="(obj, objIndex) of goodsList" 
+            :key="obj.id">
+            <div class="title">{{ obj.title }}：</div>
+            <ul class="type-list">
+                <li 
+                    v-for="(item, itemIndex) of obj.typeList"
+                    class="type"
+                    :class="{active: itemIndex === obj.index}"
+                    @click="changeActive(itemIndex, obj, item, objIndex)"
+                >{{ item }}</li>
+            </ul>
+        </div>
+        <div class="choose-type">
+            <div>已选条件：</div>
+            <span v-show="flag" class="no-goods">暂时没有选择过滤条件</span>
+            <ul class="filter-list" v-show="!flag">
+                <li v-for="(value, key) of filterGoods">
+                    {{ value }}
+                    <span class="delete-goods" @click="deleteGoods(key)">x</span>
+                </li>
+            </ul>
+        </div>
     </div>
-    
+
     <script src="./vue.js"></script>
     <script>
         const vm = new Vue({
             el: '#app',
             data: {
-                number: 10,
-                show: true,
-                arr: ['hello', 'vue'],
-                person: [
-                    {name: '小明', age: 15, isActive: true},
-                    {name: '小李', age: 16, isActive: false},
-                    {name: '小王', age: 17, isActive: true},
-                    {name: '小红', age: 18, isActive: false},
-                ],
-                obj: {
-                    name: '小明',
-                    age: 15,
-                    sex: 'male'
-                }
+                flag: true,
+                // filterList: [],
+                filterGoods: {},
+                goodsList: [
+                    {
+                        title: '上装',
+                        typeList: ['全部', '针织衫', '毛呢外套', 'T恤', '羽绒服', '棉衣', '卫衣', '风衣'],
+                        id: 1,
+                    },
+                    {
+                        title: '裤装',
+                        typeList: ['全部', '牛仔裤', '小脚/铅笔裤', '休闲裤', '打底裤', '哈伦裤'],
+                        id: 2,
+                    },
+                    {
+                        title: '裙装',
+                        typeList: ['全部', '连衣裙', '半身裙', '长袖连衣裙', '中长款连衣裙'],
+                        id: 3,
+                    }
+                ]
             },
-            methods: { 
-                change(i) {
-                    const newArr = this.person.splice(i, 1);
-                    // console.log(newArr);
-                    this.person.splice(++i, 0, ...newArr);
-                    // console.log(this.person);
+            methods: {
+                changeActive(itemIndex, obj, item, objIndex) {
+                    if (item === '全部') {
+                        return;
+                    }
+                    this.flag = false;
+                    obj.index = itemIndex;
+                    // this.filterList.splice(objIndex, 1, item);
+                    // this.$set(this.filterList, objIndex, item);
+                    this.$set(this.filterGoods, objIndex, item);
                 },
-                reverse() {
-                    this.arr.reverse();
+                deleteGoods(key) {
+                    this.$delete(this.filterGoods, key);
+                    this.goodsList[key].index = 0;
+                    this.changeFlag();
+                },
+                changeFlag() {
+                    const str = JSON.stringify(this.filterGoods);
+                    this.flag = str === '{}';
                 }
             }
         });
+        for (const item of vm.goodsList) {
+            vm.$set(item, 'index', 0)
+        }
+        // vm.goodsList.forEach(ele => { vm.$set(ele, 'index', 0) });
     </script>
 </body>
+
 </html>
