@@ -10,49 +10,16 @@
 
 <body>
     <div id="app">
-        <!-- <input type="text" v-model="msg">
-        <p>value值为：{{ msg }}</p> -->
-
-        <!-- <input type="checkbox" v-model="checked" id="check">
-        <label for="check">{{ checked }}</label> -->
-
-        <!-- <input type="checkbox" value="苹果" id="apple" v-model="list">
-        <label for="apple">苹果</label>
-        <input type="checkbox" value="香蕉" id="banana" v-model="list">
-        <label for="banana">香蕉</label>
-        <input type="checkbox" value="梨" id="pear" v-model="list">
-        <label for="pear">梨</label>
-        <p>被选中的水果有：{{ list }}</p> -->
-
-        <!-- <input type="radio" value="苹果" id="apple" v-model="str">
-        <label for="apple">苹果</label>
-        <input type="radio" value="香蕉" id="banana" v-model="str">
-        <label for="banana">香蕉</label>
-        <input type="radio" value="梨" id="pear" v-model="str">
-        <label for="pear">梨</label>
-        <p>被选中的水果有：{{ str }} -->
-
-        <!-- <textarea v-model="infos"></textarea>
-        <p>多行内容为：{{ infos }}</p> -->
-
-        <!-- <select v-model="selected">
-            <option :disabled="selected">请选择</option>
-            <option>北京市</option>
-            <option>上海市</option>
-            <option>天津市</option>
-            <option>重庆市</option>
-            <option>台湾市</option>
+        <input type="number" v-model.number.lazy="num1">
+        <select v-model="op">
+            <option>+</option>
+            <option>-</option>
+            <option>*</option>
+            <option>/</option>
         </select>
-        <p>选中的城市是：{{ selected }}</p> -->
-
-        <!-- <input type="text" v-model.lazy="value">
-        <p>value值为：{{ value }}</p> -->
-
-        <!-- <input type="number" v-model.number="num">
-        <p>value类型为：{{ typeof num }} </p> -->
-        
-        <input type="text" v-model.trim="value">
-        <p>value去空格为：{{ value }}</p>
+        <input type="number" v-model.number.lazy="num2">
+        <button @click="calc">=</button>
+        <span>{{ result }}</span>
     </div>
 
     <script src="./vue.js"></script>
@@ -60,14 +27,29 @@
         const vm = new Vue({
             el: '#app',
             data: {
-                msg: '123',
-                checked: '',
-                list: [],
-                str: '苹果',
-                infos: 'asd',
-                selected: '请选择',
-                value: '  hello vue  ',
-                num: ''
+                num1: 0,
+                num2: 0,
+                op: '+',
+                result: 0
+            },
+            methods: {
+                calc() {
+                    let { num1, num2, op } = this;
+                    switch (op) {
+                        case '+':
+                            this.result = num1 + num2
+                            break;
+                        case '-':
+                            this.result = num1 - num2
+                            break;
+                        case '*':
+                            this.result = num1 * num2
+                            break;
+                        case '/':
+                            this.result = num1 / num2
+                            break;
+                    }
+                }
             }
         });
     </script>
