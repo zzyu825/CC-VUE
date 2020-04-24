@@ -6,132 +6,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
 </head>
 
 <body>
     <div id="app">
-        {{ msg }}
-        {{ obj }}
-        <!-- {{ fullName }} -->
-        <!-- {{ newNum }} -->
-        {{ num }}
-    </div>
+        <div class="logo">
+            <img src="https://www.baidu.com/img/bd_logo1.png?where=super" alt="点击一下，了解更多">
+        </div>
+        <div class="search-box">
+            <span class="search-area">
+                <input type="text" maxlength="100" v-model="inputVal" @focus="() => inputFocus = true"
+                    @blur="() => inputFocus = false">
+                <span class="icon icon-paizhao"></span>
+            </span>
+            <span class="search-btn">百度一下</span>
+        </div>
 
+        <ul class="search-list" v-show="inputFocus && searchResList.length">
+            <li v-for="res in searchResList" :key="res">
+                {{ res }}
+            </li>
+        </ul>
+    </div>
     <script src="./vue.js"></script>
+    <script src="./jquery.js"></script>
     <script>
         const vm = new Vue({
             el: '#app',
             data: {
-                msg: 'hello vue',
-                obj: {
-                    name: 'abc',
-                    age: 18
-                },
-                firstName: 'a',
-                lastName: 'b',
-                fullName: 'ab',
-                num: 1
+                inputFocus: false,
+                inputVal: '',
+                searchResList: []
             },
             methods: {
-                change() {
-                    // console.log(`msg数据变化了:${this.msg}`);
-                    console.log(`obj对象中name属性变化了:${this.obj.name}`);
+                searchRes(res) {
+                    this.searchResList = res.s;
                 }
-            },
-            computed: {
-                // fullName() {
-                //     return this.firstName + this.lastName
-                // }
-                // newNum() {
-                //     setTimeout(() => {
-                //         this.num = 123
-                //     }, 1000)
-                //     console.log(this.num);
-                //     只能先得到num变化后的值，最后才能得到异步处理后的值
-                //     return this.num;
-                // }
             },
             watch: {
-                // msg(newVal, oldVal) {
-                //     // console.log(`msg数据变化了:${this.msg}`);
-                //     console.log(`${oldVal}数据变化了:${newVal}`);
-                // },
-                // msg: 'change',
-                // msg: {
-                //     // handler() {
-                //     //     console.log(`msg数据变化了:${this.msg}`);
-                //     // },
-                //     handler: 'change',
-                // },
-                // obj: {
-                //     handler() {
-                //         console.log(`obj对象变化了:${this.obj}`);
-                //         console.log('配置immediate，一加侦听后就先要执行一次')
-                //     },
-                //     deep: true,
-                //     immediate: true
-                // }
-                // msg: [
-                //     function() {
-                //         console.log(`msg数据变化了:${this.msg}`);
-                //     },
-                //     'change',
-                //     {
-                //         handler() {
-                //             console.log(`msg数据变化了:${this.msg}`);
-                //         },
-                //         deep: true,
-                //         immediate: true
-                //     }
-                // ],
-                // 'obj.name'(newVal) {
-                //     console.log(`obj对象中name属性变化了:${newVal}`);
-                // },
-                // 'obj.name': 'change',
-                // firstName() {
-                //     return this.firstName + this.lastName
-                // },
-                // lastName(){}
-                num(newVal) {
-                    setTimeout(() => {
-                        alert(newVal);
-                    }, 1000)
+                inputVal() {
+                    $.ajax({
+                        dataType: 'jsonp',
+                        url: 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',
+                        data: {
+                            wd: this.inputVal,
+                            cb: 'vm.searchRes'
+                        }
+                    })
                 }
             }
+
         });
-        // vm.$watch('msg', (newVal) => {
-        //     console.log(`msg数据变化了:${newVal}`);
-        // }, {
-        //     deep: true,
-        //     immediate: true
-        // });
-        // vm.$watch('msg', {
-        //     handler (newVal) {
-        //         console.log(`msg数据变化了:${newVal}`);
-        //     },
-        //     deep: true,
-        //     immediate: true
-        // });
-        // vm.$watch(function() {
-        //     return this.firstName + this.lastName
-        // }, {
-        //     handler() {
-        //         console.log('数据变化了')
-        //     }
-        // })
-        // const unwatch = vm.$watch('msg', newVal => {console.log(newVal)});
-        // unwatch();
-        // var unwatch = vm.$watch('msg', newVal => {
-        //     // 干了点儿事
-        //     if (unwatch) {
-        //         unwatch();
-        //         return;
-        //     }
-        //     console.log(newVal)
-        // }, {
-        //         immediate: true
-        //     }
-        // );
     </script>
 </body>
 
