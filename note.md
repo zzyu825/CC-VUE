@@ -1,39 +1,47 @@
-# 练习_姓名筛选
+# 练习_全选商品
 ```js
-personArr: [
-  { 
-    name: '王港', 
-    src: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4005587090,2408158268&fm=26&gp=0.jpg', 
-    des: '颈椎不好', 
-    sex: 'm', 
-    id: '056482' 
+courseList: [
+  {
+    poster: 'https://img.alicdn.com/bao/uploaded/i1/TB1VtAgdlWD3KVjSZFs3KIqkpXa_040950.jpg_80x80.jpg',
+    title: 'cc教育 CSS3 深度剖析',
+    price: 1299,
+    cart: 1,
+    id: 0
   },
-  { 
-    name: '刘莹', 
-    src: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571915784984&di=a0056fd06188e87b922c60878e5ce6e2&imgtype=0&src=http%3A%2F%2Fpic.51yuansu.com%2Fpic3%2Fcover%2F03%2F79%2F64%2F5c05df1faf3b7_610.jpg', 
-    des: '我是谁', 
-    sex: 'f', 
-    id: '157894' 
+  {
+    poster: 'https://img.alicdn.com/bao/uploaded/i7/TB1_VJecBWD3KVjSZKPagip7FXa_045814.jpg_80x80.jpg',
+    title: 'cc教育 移动端开发课程',
+    price: 1148,
+    cart: 1,
+    id: 1595402664708
   },
-  { 
-    name: '刘秀莹', 
-    src: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571915803971&di=47dc968f55b16a461de3e8f25bdf8600&imgtype=0&src=http%3A%2F%2Fimg.duoziwang.com%2F2016%2F11%2F27%2F190426198344.jpg', des: '我长得很好看', 
-    sex: 'f', 
-    id: '2849245' 
+  {
+    poster: 'https://img.alicdn.com/bao/uploaded/i2/TB1J.Q4cQxz61VjSZFto7uDSVXa_010347.jpg_80x80.jpg',
+    title: 'cc教育 2019年 HTMLCSS零基础入学宝典',
+    price: 1,
+    cart: 1,
+    id: 1596305473062
   },
-  { 
-    name: '刘金雷', 
-    src: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571915748758&di=5be825da4d37bcc21959946c101d5609&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F19%2F20170719211350_4PnBt.jpeg', 
-    des: '你没有见过陌生的脸', 
-    sex: 'm', 
-    id: '348515' 
+  {
+    poster: 'https://img.alicdn.com/bao/uploaded/i2/TB1bHwlaCWD3KVjSZSgVbgCxVXa_032434.jpg_80x80.jpg',
+    title: 'cc教育 Web前端开发JavaScriptJs课',
+    price: 1,
+    cart: 1,
+    id: 1595413512182
   },
-  { 
-    name: '刘飞翔', 
-    src: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571915762633&di=49517ca62ecddb638cdfb2158a64e39a&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201702%2F05%2F20170205222154_WLdJS.jpeg', 
-    des: '瓜皮刘', 
-    sex: 'm', 
-    id: '478454'
-  }
-],
+  {
+    poster: 'https://img.alicdn.com/bao/uploaded/i2/TB1MJd3g4z1gK0jSZSgnHevwpXa_014447.jpg_80x80.jpg',
+    title: 'Web前端开发高级工程师全栈班【cc教育】',
+    price: 12798,
+    cart: 1,
+    id: 1596302161181
+  },
+  {
+    poster: 'https://img.alicdn.com/bao/uploaded/i6/TB1xPeAbwaH3KVjSZFpjaLhKpXa_105848.jpg_80x80.jpg',
+    title: 'cc教育 Java零基础入门到精通（集合，泛型等）',
+    price: 1,
+    cart: 1,
+    id: 1596300025301,
+  },
+]
 ```
