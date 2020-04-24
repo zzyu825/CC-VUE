@@ -11,49 +11,76 @@
 
 <body>
     <div id="app">
-        <div class="logo">
-            <img src="https://www.baidu.com/img/bd_logo1.png?where=super" alt="点击一下，了解更多">
+        <div class="username">
+            <input type="text" placeholder="用户名" v-model="name">
         </div>
-        <div class="search-box">
-            <span class="search-area">
-                <input type="text" maxlength="100" v-model="inputVal" @focus="() => inputFocus = true"
-                    @blur="() => inputFocus = false">
-                <span class="icon icon-paizhao"></span>
-            </span>
-            <span class="search-btn">百度一下</span>
+        <div class="mail">
+            <input type="text" placeholder="邮箱" v-model="email">
         </div>
-
-        <ul class="search-list" v-show="inputFocus && searchResList.length">
-            <li v-for="res in searchResList" :key="res">
-                {{ res }}
+        <div class="upload-btn" @click="upload">上传</div>
+        <div class="test-btn" @click="testJsonp">测试jsonp</div>
+        <div class="show-btn" @click="showInfo">显示当前用户信息</div>
+        <ul class="person-list" v-show="personList.length">
+            <li class="person" v-for="person of personList">
+                <span>{{ person.name }}</span>
+                <span>{{ person.mail }}</span>
             </li>
         </ul>
     </div>
     <script src="./vue.js"></script>
-    <script src="./jquery.js"></script>
+    <script src="./vue-resource.js"></script>
     <script>
         const vm = new Vue({
             el: '#app',
             data: {
-                inputFocus: false,
-                inputVal: '',
-                searchResList: []
+                name: '',
+                email: '',
+                msg: '',
+                personList: []
             },
             methods: {
-                searchRes(res) {
-                    this.searchResList = res.s;
+                upload() {
+                    this.$http.post('https://developer.duyiedu.com/vue/setUserInfo', {
+                        name: this.name,
+                        mail: this.email
+                    }).then(res => {
+                        // console.log(res);
+                        this.msg = res.body.msg;
+                    }).catch(err => {
+                        this.msg = err.body.msg;
+                    });
+                },
+                showInfo() {
+                    this.$http.get('https://developer.duyiedu.com/vue/getUserInfo')
+                        .then(res => {
+                            // this.personList = res.body.data;
+                            return res.json();
+                        }).then(res => {
+                            console.log(res);
+                        })
+                },
+                testJsonp() {
+                    // this.$http.jsonp('https://developer.duyiedu.com/vue/jsonp')
+                    //     .then(res => {
+                    //         console.log(res);
+                    //     })
+                    this.$http.jsonp('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su', {
+                        params: {
+                            wd: 'nba'
+                        },
+                        jsonp: 'cb'
+                    }).then(res => {
+                        console.log(res);
+                    })
                 }
             },
             watch: {
-                inputVal() {
-                    $.ajax({
-                        dataType: 'jsonp',
-                        url: 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',
-                        data: {
-                            wd: this.inputVal,
-                            cb: 'vm.searchRes'
-                        }
-                    })
+                msg() {
+                    if (this.msg === '') {
+                        return;
+                    }
+                    alert(this.msg);
+                    this.msg = '';
                 }
             }
 
