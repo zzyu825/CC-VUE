@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div id="app">
+    <div id="app" @scroll="handleScroll">
         <!-- 头部 -->
         <div class="header">
             <div class="logo">
@@ -80,6 +80,32 @@
                 ></li>
             </ul>
         </div>
+        <!-- 视频区域 -->
+        <div class="video-box">
+            <ul class="video-list">
+                <li class="video" 
+                    v-for="video of videoList"
+                    :key="video.id"
+                >
+                    <div class="poster">
+                        <img :src="video.poster" :alt="video.title">
+                        <div class="info">
+                            <div class="play">
+                                <svg id="icon-bofangshu" viewBox="0 0 1024 1024"><path d="M800 128H224C134.4 128 64 198.4 64 288v448c0 89.6 70.4 160 160 160h576c89.6 0 160-70.4 160-160V288c0-89.6-70.4-160-160-160z m96 608c0 54.4-41.6 96-96 96H224c-54.4 0-96-41.6-96-96V288c0-54.4 41.6-96 96-96h576c54.4 0 96 41.6 96 96v448z"></path><path d="M684.8 483.2l-256-112c-22.4-9.6-44.8 6.4-44.8 28.8v224c0 22.4 22.4 38.4 44.8 28.8l256-112c25.6-9.6 25.6-48 0-57.6z"></path></svg>
+                                {{ video.play }}
+                            </div>
+                            <div class="rank" v-if="video.rank">
+                                <svg viewBox="0 0 1024 1024"><path d="M800 128H224C134.4 128 64 198.4 64 288v448c0 89.6 70.4 160 160 160h576c89.6 0 160-70.4 160-160V288c0-89.6-70.4-160-160-160z m96 608c0 54.4-41.6 96-96 96H224c-54.4 0-96-41.6-96-96V288c0-54.4 41.6-96 96-96h576c54.4 0 96 41.6 96 96v448z"></path><path d="M240 384h64v64h-64zM368 384h384v64h-384zM432 576h352v64h-352zM304 576h64v64h-64z"></path></svg>
+                                {{ video.rank }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="title">
+                        {{ video.title }}
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
     <script src="./vue.js"></script>
     <script src="./axios.js"></script>
@@ -89,7 +115,7 @@
         // 响应拦截器
         axios.interceptors.response.use(res => {
             if (res.status === 200) {
-                return res.data.data;
+                return res.data;
             }
         })
         const vm = new Vue({
@@ -106,6 +132,19 @@
                     transition: 'left .3s',
                 },
                 bannerListLength: 0,
+                videoOldList: [],
+                videoNewList: [],
+                videoCount: 0,
+                getVideo: true
+            },
+            computed: {
+                videoList() {
+                    return this.videoOldList.map(ele => {
+                        ele.play = ele.play > 10000 ? ele.play / 10000 + '万' : ele.play;
+                        ele.rank = ele.rank > 10000 ? ele.rank / 10000 + '万' : ele.rank;
+                        return ele;
+                    })
+                }
             },
             methods: {
                 activeChange(index) {
@@ -130,17 +169,46 @@
                         this.bannerStyle.transition = 'none';
                     }
                     this.autoMove();
+                },
+                handleScroll(e) {
+                    const { scrollHeight, offsetHeight, scrollTop } = e.target;
+                    const toBottomHeight = scrollHeight - offsetHeight - scrollTop;
+                    const videoLength = this.videoList.length;
+                    if (videoLength === this.videoCount) {
+                        return;
+                    }
+                    if (toBottomHeight < 200 && this.getVideo) {
+                        this.getVideo = false;
+                        axios.get('/video', {
+                            params: {
+                                start: this.videoList.length,
+                                offset: 12
+                            }
+                        }).then(res => {
+                            this.videoOldList.push(...res.data);
+                            this.getVideo = true;
+                        })
+                    }
                 }
             },
             created () {
                 axios.get('/nav').then(res => {
-                    this.navList = res;
+                    this.navList = res.data;
                 }),
                 axios.get('/banner').then(res => {
-                    const lastBan = {...res[0]};
+                    const lastBan = {...res.data[0]};
                     lastBan.id = Math.floor(Math.random() * 10000000);
-                    this.bannerList = [...res, lastBan];
-                    this.bannerListLength = res.length;
+                    this.bannerList = [...res.data, lastBan];
+                    this.bannerListLength = res.data.length;
+                }),
+                axios.get('/video', {
+                    params: {
+                        start: 0,
+                        offset: 12
+                    }
+                }).then(res => {
+                    this.videoOldList = res.data;
+                    this.videoCount = res.count;
                 })
             },
             mounted () {
