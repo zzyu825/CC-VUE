@@ -15,10 +15,11 @@
             <input type="text" placeholder="用户名" v-model="name">
         </div>
         <div class="mail">
-            <input type="text" placeholder="邮箱" v-model="email">
+            <input type="text" placeholder="邮箱" v-model="mail">
         </div>
         <div class="upload-btn" @click="upload">上传</div>
         <div class="show-btn" @click="showInfo">显示当前用户信息</div>
+        <button @click="cancel">取消请求</button>
         <ul class="person-list" v-show="personList.length">
             <li class="person" v-for="person of personList">
                 <span>{{ person.name }}</span>
@@ -30,18 +31,42 @@
     <script src="./vue.js"></script>
     <script>
         // axios.defaults.baseURL = 'https://developer.duyiedu.com/vue';
-        // const instanceA = axios.create({
-        //     baseURL: 'https://developer.duyiedu.com/vue/a'
+        axios.defaults.baseURL = 'http://127.0.0.1:12306';
+
+        // axios.interceptors.request.use(config => {
+        //     // console.log(config);
+        //     config.method = "post";
+        //     config.url = "/setUserInfo";
+        //     if (config.method === 'get') {
+        //         // ...
+        //     }
+        //     return config;
+        // }, err => {
+        //     alert('xx');
+        //     return Promise.reject(err);
         // });
-        // const instanceB = axios.create({
-        //     baseURL: 'https://developer.duyiedu.com/vue/b'
-        // });
-        
+        const interceptor = axios.interceptors.response.use(res => {
+            // console.log(res);
+            if (res.status === 200) {
+                return res.data.data;
+            }
+        }, err => {
+            // 错误统一处理
+            return Promise.reject(err);
+        })
+
+        // axios.interceptors.response.eject(interceptor);
+
+        const instance = axios.create();
+        instance.interceptors.request.use(config => {});
+
+        const source = axios.CancelToken.source();
+
         const vm = new Vue({
             el: '#app',
             data: {
-                name: '',
-                email: '',
+                name: 'yu',
+                mail: '123',
                 msg: '',
                 personList: []
             },
@@ -51,29 +76,43 @@
                     axios.post('/setUserInfo', {
                         name,
                         mail
-                    }, {
-                        baseURL: 'https://developer.duyiedu.com/vue'
                     }).then(res => {
                         this.msg = res.data.msg;
                     })
                 },
                 showInfo() {
-                    // axios({
-                    //     method: 'get',
-                    //     baseURL: 'https://developer.duyiedu.com/vue',
-                    //     url: '/getUserInfo'
-                    // }).then(res => {
-                    //     // console.log(res);
-                    //     this.msg = res.data.msg;
-                    //     this.personList = res.data.data;
-                    // });
-                    // instanceA.get('/getUserInfo').then(res => {})
-                    axios.all([
-                        axios.get('/a'),
-                        axios.get('/b')
-                    ]).then(axios.spread((ares, bres) => {
-                        console.log(ares, bres)
-                    }))
+                    axios.get('/getUserInfo', {
+                        cancelToken: source.token
+                    }).then(res =>{
+                        console.log(res);
+                        this.personList = res;
+                    }).catch(err => {
+                        // console.log(err);
+                        // const msg = err.message;
+                        // if (msg === 0) {
+                        //     // ...
+                        // }
+                        console.log(err.request, err.response)
+                        if (err.response) {
+                            // console.log('响应时错误');
+                            const { status } = err.response;
+                            switch (status) {
+                                case 404:
+                                    console.log('url地址错误')
+                                    break;
+                            
+                                default:
+                                    break;
+                            }
+                        } else if (err.request) {
+                            console.log('请求时错误')
+                        } else {
+                            console.log('请求未发出')
+                        }
+                    })
+                },
+                cancel() {
+                    source.cancel('取消请求了');
                 }
             },
             watch: {
