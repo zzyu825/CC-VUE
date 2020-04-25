@@ -60,6 +60,26 @@
                 <svg width="16" height="32" viewBox="0 0 1024 1024"><path d="M854.4 713.6c12.8 12.8 32 12.8 44.8 0s12.8-35.2 0-48L537.6 304c-12.8-12.8-32-12.8-44.8 0L124.8 672c-12.8 12.8-12.8 35.2 0 48s32 12.8 44.8 0l345.6-342.4 339.2 336z" fill="#ccc"></path></svg>
             </div>
         </div>
+        <!-- 轮播图区域 -->
+        <div class="banner-box">
+            <ul class="banner-list"
+                :style="bannerStyle"
+                @transitionend="handleTransitionEnd"
+            >
+                <li class="banner" 
+                    v-for="banner of bannerList"
+                    :key="banner.id"
+                >
+                <img :src="banner.poster" :alt="banner.title" class="poster">
+                </li>
+            </ul>
+            <ul class="index-list">
+                <li class="index" 
+                    v-for="item of bannerListLength"
+                    :class="{active: item - 1 === bannerActiveIndex % 3}"
+                ></li>
+            </ul>
+        </div>
     </div>
     <script src="./vue.js"></script>
     <script src="./axios.js"></script>
@@ -78,6 +98,14 @@
                 navList: [],
                 navHide: true,
                 navActiveIndex: 0,
+                bannerList: [],
+                bannerActiveIndex: 0,
+                bannerWidth: 350,
+                bannerStyle: {
+                    left: 0,
+                    transition: 'left .3s',
+                },
+                bannerListLength: 0,
             },
             methods: {
                 activeChange(index) {
@@ -85,12 +113,38 @@
                 },
                 showNav() {
                     this.navHide = !this.navHide;
+                },
+                autoMove() {
+                    setTimeout(() => {
+                        if(this.bannerActiveIndex === 0 ) {
+                            this.bannerStyle.transition = 'left .3s';
+                        }
+                        this.bannerActiveIndex ++;
+                        this.bannerStyle.left = -this.bannerActiveIndex * this.bannerWidth + 'px';
+                    }, 1500);
+                },
+                handleTransitionEnd() {
+                    if(this.bannerActiveIndex === 3) {
+                        this.bannerActiveIndex = 0;
+                        this.bannerStyle.left = 0;
+                        this.bannerStyle.transition = 'none';
+                    }
+                    this.autoMove();
                 }
             },
             created () {
                 axios.get('/nav').then(res => {
                     this.navList = res;
+                }),
+                axios.get('/banner').then(res => {
+                    const lastBan = {...res[0]};
+                    lastBan.id = Math.floor(Math.random() * 10000000);
+                    this.bannerList = [...res, lastBan];
+                    this.bannerListLength = res.length;
                 })
+            },
+            mounted () {
+                this.autoMove();
             }
         });
     </script>
