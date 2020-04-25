@@ -1,74 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
 </head>
+
 <body>
     <div id="app">
-        <!-- 连字符 -->
-        <!-- <my-comp></my-comp>
-        <my-comps></my-comps> -->
-        <!-- 大驼峰 -->
-        <!-- <my-comp></my-comp>
-        <MyComp></MyComp>
-        <my-comps></my-comps>
-        <MyComps></MyComps> -->
-        <!-- 自闭合 -->
-        <!-- <my-comp/>
-        <my-comp/> -->
-        <my-comps></my-comps>
+        <video-list :video-list="videoList"></video-list>
     </div>
     <script src="./vue.js"></script>
+    <script src="./axios.js"></script>
     <script>
-        // 全局注册组件 连字符
-        // Vue.component('my-comp', {
-        //     template: `
-        //         <p>我是全局组件</p>
-        //     `
-        // });
-        // 全局注册组件 大驼峰
-        Vue.component('MyComp', {
-            // template: `
-            //     <p>我是全局组件</p>
-            // `
-            data () {
-                return {
-                    count: 0
-                }
-            },
+        Vue.component('video-list', {
+            props: ['videoList'],
             template: `
-                <button @click='count++'>点击了我{{ count }}次</button>
-            `
-        });
-        // const myComps = {
-        //     template: `
-        //                 <p>我是局部组件</p>
-        //             `
-        // }
-        const vm = new Vue({
-            el: "#app",
-            components: {
-                // 'my-comps': {
-                //     template: `
-                //         <p>我是局部组件</p>
-                //     `
-                // },
-                // 'my-comps': myComps,
-                'MyComps': {
-                    template: `
-                        <div>
-                            <p>我是局部组件</p>
-                            <MyComp></MyComp>
-                            <MyComp />
-                            <MyComp />
+                        <div class="video-list">
+                            <video-item
+                                v-for="video in videoList"
+                                v-bind="video"
+                            ></video-item>
                         </div>
                     `
-                },
+        });
+        Vue.component('video-item', {
+            props: ['poster', 'play', 'rank', 'title'],
+            template: `
+                        <div class="video-item">
+                            <div class="poster">
+                                <img :src="poster" alt="">
+                                <div class="info">
+                                <div class="play">{{ play }}</div>
+                                <div class="rank">{{ rank }}</div>
+                                </div>
+                            </div>
+                            <div class="title">{{ title }}</div>
+                        </div>
+                    `
+        });
+        const vm = new Vue({
+            el: "#app",
+            data: {
+                videoList: []
+            },
+            created () {
+                axios.get('https://developer.duyiedu.com/vue/bz/video', {
+                    params: {
+                        start: 0,
+                        offset: 12
+                    }
+                }).then(res => {
+                     this.videoList = res.data.data
+                })
             }
+
         })
     </script>
 </body>
+
 </html>
