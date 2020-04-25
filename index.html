@@ -10,14 +10,72 @@
 
 <body>
     <div id="app">
-         
+        {{ msg }}
     </div>
     <script src="./vue.js"></script>
     <script>
         const vm = new Vue({
             el: '#app',
-            template: '<div id="app1"></div>'
+            data: {
+                msg: 'abc'
+            },
+            methods: {
+                handle() {
+                    console.log('处理函数')
+                }
+            },
+            watch: {
+                msg: {
+                    handler() {
+                        console.log('侦听msg')
+                    },
+                    immediate: true
+                }
+            },
+            beforeCreate() {
+                console.log(this.msg);
+                console.log(this.handle);
+                console.log('----beforeCreate----');
+                this.timer = setInterval(() => {
+                    console.log(1)
+                }, 1000)
+            },
+            created() {
+                console.log(this.msg);
+                console.log(this.handle);
+                console.log(this.$el);
+                console.log('----created----');
+            },
+            beforeMount() {
+                console.log(this.$el);
+                console.log('----beforeMount----');
+            },
+            mounted() {
+                console.log(this.$el);
+                console.log('----mounted----');
+            },
+            beforeUpdate() {
+                console.log(this.msg);
+                // console.log(this.$el);
+                console.log(this.$el.outerHTML);
+                console.log('----beforeUpdate----');
+            },
+            updated () {
+                console.log(this.msg);
+                console.log(this.$el.outerHTML);
+                console.log('----updated----');
+            },
+            beforeDestroy () {
+                clearInterval(this.timer);
+                console.log('----beforeDestroy----');
+            },
+            destroyed () {
+                console.log('----destroyed----');
+            }
         });
+        // const a = {};
+        // console.log(a);
+        // a.name = '123';
     </script>
 </body>
 
