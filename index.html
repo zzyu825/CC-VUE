@@ -6,58 +6,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="./index.css">
 </head>
 
 <body>
     <div id="app">
-        <video-list :video-list="videoList"></video-list>
+        <my-comp :list="list"></my-comp>
+        <!-- <my-comp></my-comp> -->
     </div>
     <script src="./vue.js"></script>
-    <script src="./axios.js"></script>
     <script>
-        Vue.component('video-list', {
-            props: ['videoList'],
-            template: `
-                        <div class="video-list">
-                            <video-item
-                                v-for="video in videoList"
-                                v-bind="video"
-                            ></video-item>
-                        </div>
-                    `
-        });
-        Vue.component('video-item', {
-            props: ['poster', 'play', 'rank', 'title'],
-            template: `
-                        <div class="video-item">
-                            <div class="poster">
-                                <img :src="poster" alt="">
-                                <div class="info">
-                                <div class="play">{{ play }}</div>
-                                <div class="rank">{{ rank }}</div>
-                                </div>
-                            </div>
-                            <div class="title">{{ title }}</div>
-                        </div>
-                    `
-        });
-        const vm = new Vue({
-            el: "#app",
-            data: {
-                videoList: []
-            },
-            created () {
-                axios.get('https://developer.duyiedu.com/vue/bz/video', {
-                    params: {
-                        start: 0,
-                        offset: 12
+        Vue.component('MyComp', {
+            // props: ['list'],
+            props: {
+                // list: Array
+                // list: [Array, Number]
+                list: {
+                    type: [Array, Number],
+                    // default: 4,
+                    default() {
+                        return [
+                            {name: 'c'},
+                            {name: 'd'},
+                        ]
+                    },
+                    required: true,
+                    validator(prop) {
+                        return prop.length > 3
                     }
-                }).then(res => {
-                     this.videoList = res.data.data
-                })
+                }
+            },
+            template: `
+                <ul>
+                    <li v-for="item of list" :key="item.name">
+                        {{ item.name }}
+                        {{ item }}
+                    </li>
+                </ul>
+            `
+        })
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                list: [
+                    {name: 'a'},
+                    {name: 'b'}
+                ],
+                // list: 3,
+                // list: undefined
             }
-
         })
     </script>
 </body>
