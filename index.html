@@ -10,49 +10,80 @@
 
 <body>
     <div id="app">
-        <my-comp :list="list"></my-comp>
-        <!-- <my-comp></my-comp> -->
+        <!-- <p>{{ count }}</p>
+        <button @click="count++">father点击加1</button>
+        <my-num :count="count"></my-num> -->
+
+        <!-- <p>{{ arr }}</p>
+        <button @click="arr.push(4)">father数组添加4</button>
+        <my-arr :arr="arr"></my-arr> -->
+
+        <my-str :str="str"></my-str>
     </div>
     <script src="./vue.js"></script>
     <script>
-        Vue.component('MyComp', {
-            // props: ['list'],
+        // Vue.component('my-num', {
+        //     props: {
+        //         count: Number
+        //     },
+        //     data() {
+        //         return {
+        //             counts: this.count
+        //         }
+        //     },
+        //     // template: `
+        //     //             <div>
+        //     //                 <p>{{ count }}</p>
+        //     //                 <button @click="count++">son点击加1</button>
+        //     //             </div>
+        //     //         `
+        //     template: `
+        //                 <div>
+        //                     <p>{{ counts }}</p>
+        //                     <button @click="counts++">son点击加1</button>
+        //                 </div>
+        //             `
+        // });
+        // Vue.component('my-arr', {
+        //     props: {
+        //         arr: Array
+        //     },
+        //     data() {
+        //         return {
+        //             arrs: this.arr // 深度克隆
+        //         }
+        //     },
+        //     // template: `
+        //     //             <div>
+        //     //                 <p>{{ arr }}</p>
+        //     //                 <button @click="arr.push(4)">son数组添加4</button>
+        //     //             </div>
+        //     //         `
+        //     template: `
+        //                 <div>
+        //                     <p>{{ arrs }}</p>
+        //                     <button @click="arrs.push(4)">son数组添加4</button>
+        //                 </div>
+        //             `
+        // });
+        Vue.component('my-str', {
             props: {
-                // list: Array
-                // list: [Array, Number]
-                list: {
-                    type: [Array, Number],
-                    // default: 4,
-                    default() {
-                        return [
-                            {name: 'c'},
-                            {name: 'd'},
-                        ]
-                    },
-                    required: true,
-                    validator(prop) {
-                        return prop.length > 3
-                    }
+                str: String
+            },
+            computed: {
+                changeStr() {
+                    return this.str.trim().toLowerCase()
                 }
             },
-            template: `
-                <ul>
-                    <li v-for="item of list" :key="item.name">
-                        {{ item.name }}
-                        {{ item }}
-                    </li>
-                </ul>
-            `
+            template: `<p>{{ changeStr }}</p>`
         })
+
         const vm = new Vue({
             el: '#app',
             data: {
-                list: [
-                    {name: 'a'},
-                    {name: 'b'}
-                ],
-                // list: 3,
-                // list: undefined
+                count: 1,
+                arr: [1,2,3],
+                str: '  ABC  '
             }
         })
     </script>
