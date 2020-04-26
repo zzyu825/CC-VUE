@@ -10,80 +10,31 @@
 
 <body>
     <div id="app">
-        <!-- <p>{{ count }}</p>
-        <button @click="count++">father点击加1</button>
-        <my-num :count="count"></my-num> -->
-
-        <!-- <p>{{ arr }}</p>
-        <button @click="arr.push(4)">father数组添加4</button>
-        <my-arr :arr="arr"></my-arr> -->
-
-        <my-str :str="str"></my-str>
+        <!-- <my-comp a="123" class="comp" id="p2"></my-comp> -->
+        <my-comp label="单选" type="radio"></my-comp>
     </div>
     <script src="./vue.js"></script>
     <script>
-        // Vue.component('my-num', {
-        //     props: {
-        //         count: Number
-        //     },
-        //     data() {
-        //         return {
-        //             counts: this.count
-        //         }
-        //     },
-        //     // template: `
-        //     //             <div>
-        //     //                 <p>{{ count }}</p>
-        //     //                 <button @click="count++">son点击加1</button>
-        //     //             </div>
-        //     //         `
-        //     template: `
-        //                 <div>
-        //                     <p>{{ counts }}</p>
-        //                     <button @click="counts++">son点击加1</button>
-        //                 </div>
-        //             `
-        // });
-        // Vue.component('my-arr', {
-        //     props: {
-        //         arr: Array
-        //     },
-        //     data() {
-        //         return {
-        //             arrs: this.arr // 深度克隆
-        //         }
-        //     },
-        //     // template: `
-        //     //             <div>
-        //     //                 <p>{{ arr }}</p>
-        //     //                 <button @click="arr.push(4)">son数组添加4</button>
-        //     //             </div>
-        //     //         `
-        //     template: `
-        //                 <div>
-        //                     <p>{{ arrs }}</p>
-        //                     <button @click="arrs.push(4)">son数组添加4</button>
-        //                 </div>
-        //             `
-        // });
-        Vue.component('my-str', {
+        Vue.component('my-comp', {
             props: {
-                str: String
+                label: String
             },
-            computed: {
-                changeStr() {
-                    return this.str.trim().toLowerCase()
-                }
+            inheritAttrs: false,
+            mounted () {
+                console.log(this.$attrs);
             },
-            template: `<p>{{ changeStr }}</p>`
+            // template: `<p id="p1" class="p1">{{ a }}</p>`
+            template: `
+                        <label>
+                            {{ label }}：
+                            <input v-bind="$attrs"/>
+                        </label>
+            `
         })
-
         const vm = new Vue({
             el: '#app',
             data: {
-                count: 1,
-                arr: [1,2,3],
-                str: '  ABC  '
+                
             }
         })
     </script>
