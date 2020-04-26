@@ -10,31 +10,137 @@
 
 <body>
     <div id="app">
-        <!-- <my-comp a="123" class="comp" id="p2"></my-comp> -->
-        <my-comp label="单选" type="radio"></my-comp>
+        <div :style="{fontSize: postFontSize + 'em'}">
+            <!-- <blog-list 
+                v-for="item of blogList"
+                :key="item.id"
+                :item="item"
+                @click="postFontSize += 0.1"
+                @large-text="postFontSize += 0.1"
+            ></blog-list> -->
+            <!-- <blog-list 
+                v-for="item of blogList"
+                :key="item.id"
+                :item="item"
+                @click="postFontSize += 0.1"
+                @large-text="postFontSize += $event"
+            ></blog-list> -->
+            <!-- <blog-list 
+                v-for="item of blogList"
+                :key="item.id"
+                :item="item"
+                @click="postFontSize += 0.1"
+                @large-text="changeFontSize"
+            ></blog-list> -->
+
+            <!-- <base-input @focus.native="onFocus" @blur.native="onBlur"></base-input> -->
+            <!-- <base-input @focus="onFocus" @blur="onBlur"></base-input> -->
+
+            <!-- <input :value="val" @input="val = $event.target.value"> -->
+            <!-- <base-input1 :value="val" @change="val = $event"></base-input1> -->
+            <!-- <base-input1 v-model="val"></base-input1> -->
+            <!-- <base-input2 v-model="checked"></base-input2> -->
+
+            <!-- <base-input3 :value="val" @update:value="val = $event"></base-input3> -->
+            <!-- <base-input3 :value.sync="val"></base-input3> -->
+            <base-input3 v-bind.sync="obj"></base-input3>
+        </div>
     </div>
     <script src="./vue.js"></script>
     <script>
-        Vue.component('my-comp', {
+        // Vue.component('blog-list', {
+        //     props: {
+        //         item: Object
+        //     },
+        //     template: `
+        //         <div>
+        //             <h3>{{ item.title }}</h3>
+        //             <h5>{{ item.content }}</h5>
+        //             <button @click="$emit('large-text', 0.2)">放大字号</button>
+        //         </div>
+        //     `
+        // });
+        // Vue.component('base-input', {
+        //     // template: `
+        //     //     <input type="text"/>
+        //     // `
+        //     mounted () {
+        //         console.log(this.$listeners)
+        //     },
+        //     template: `
+        //         <label>
+        //             姓名：
+        //             <input type="text" v-on="$listeners"/>
+        //         </label>
+        //     `
+        // })
+        // Vue.component('base-input1', {    
+        //     props: {
+        //         value: String
+        //     },
+        //     template: `
+        //         <input type="text" 
+        //             :value="value" 
+        //             @input="$emit('change', $event.target.value)" />
+        //     `
+        // })
+        // Vue.component('base-input2', {  
+        //     model: {
+        //         prop: 'checked',
+        //         event: 'change'
+        //     },
+        //     props: {
+        //         checked: Boolean
+        //     },
+        //     // template: `
+        //     //     <input type="checkbox" 
+        //     //         :checked="checked" 
+        //     //         @input="$emit('change', $event.target.checked)" />
+        //     // `
+        // })
+        Vue.component('base-input3', {
             props: {
-                label: String
+                value: String
             },
-            inheritAttrs: false,
-            mounted () {
-                console.log(this.$attrs);
-            },
-            // template: `<p id="p1" class="p1">{{ a }}</p>`
             template: `
-                        <label>
-                            {{ label }}：
-                            <input v-bind="$attrs"/>
-                        </label>
+                <input type="text" 
+                    :value="value" 
+                    @input="$emit('update:value', $event.target.value)" />
             `
         })
         const vm = new Vue({
             el: '#app',
             data: {
-                
+                blogList: [
+                    {
+                        title: '标题',
+                        content: '内容1',
+                        id: 1
+                    },
+                    {
+                        title: '标题',
+                        content: '内容1',
+                        id: 2
+                    }
+                ],
+                postFontSize: 1,
+                val: '123',
+                checked: false,
+                obj: {
+                    value: '123'
+                }
+            },
+            methods: {
+                changeFontSize(e) {
+                    // console.log(e);
+                    this.postFontSize += e
+                },
+                onFocus() {
+                    console.log('获取焦点')
+                },
+                onBlur() {
+                    console.log('失去焦点')
+                }
             }
         })
     </script>
