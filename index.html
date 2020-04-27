@@ -10,137 +10,92 @@
 
 <body>
     <div id="app">
-        <div :style="{fontSize: postFontSize + 'em'}">
-            <!-- <blog-list 
-                v-for="item of blogList"
-                :key="item.id"
-                :item="item"
-                @click="postFontSize += 0.1"
-                @large-text="postFontSize += 0.1"
-            ></blog-list> -->
-            <!-- <blog-list 
-                v-for="item of blogList"
-                :key="item.id"
-                :item="item"
-                @click="postFontSize += 0.1"
-                @large-text="postFontSize += $event"
-            ></blog-list> -->
-            <!-- <blog-list 
-                v-for="item of blogList"
-                :key="item.id"
-                :item="item"
-                @click="postFontSize += 0.1"
-                @large-text="changeFontSize"
-            ></blog-list> -->
-
-            <!-- <base-input @focus.native="onFocus" @blur.native="onBlur"></base-input> -->
-            <!-- <base-input @focus="onFocus" @blur="onBlur"></base-input> -->
-
-            <!-- <input :value="val" @input="val = $event.target.value"> -->
-            <!-- <base-input1 :value="val" @change="val = $event"></base-input1> -->
-            <!-- <base-input1 v-model="val"></base-input1> -->
-            <!-- <base-input2 v-model="checked"></base-input2> -->
-
-            <!-- <base-input3 :value="val" @update:value="val = $event"></base-input3> -->
-            <!-- <base-input3 :value.sync="val"></base-input3> -->
-            <base-input3 v-bind.sync="obj"></base-input3>
-        </div>
+       <!-- <my-comp>
+            我是插槽内容
+            <span>{{ msg }}</span>
+       </my-comp> -->
+       <!-- <my-comp>
+            提交 
+            头部
+       </my-comp> -->
+       <!-- <my-comp>
+            <template v-slot:header>
+                <h1>头部</h1>
+            </template>
+            <template v-slot:default>
+                <h2>内容</h2>
+            </template>
+            <template #footer>
+                <h3>底部</h3>
+            </template>
+        </my-comp> -->
+        <!-- <my-comp>
+            <template v-slot="slotProp">
+                {{ slotProp.user.name }}
+            </template>
+        </my-comp>
+        <my-comp v-slot="slotProp">
+            {{ slotProp.user.age }}
+        </my-comp>
+        <my-comp v-slot="{ user }">
+            {{ user.sex }}
+        </my-comp>
+        <my-comp v-slot="{ user: person }">
+            {{ person.hobby }}
+        </my-comp> -->
+        <my-comp v-slot="{ user = { name: '123' } }">
+            {{ user.name }}
+        </my-comp>
     </div>
     <script src="./vue.js"></script>
     <script>
-        // Vue.component('blog-list', {
-        //     props: {
-        //         item: Object
-        //     },
-        //     template: `
-        //         <div>
-        //             <h3>{{ item.title }}</h3>
-        //             <h5>{{ item.content }}</h5>
-        //             <button @click="$emit('large-text', 0.2)">放大字号</button>
-        //         </div>
-        //     `
-        // });
-        // Vue.component('base-input', {
-        //     // template: `
-        //     //     <input type="text"/>
-        //     // `
-        //     mounted () {
-        //         console.log(this.$listeners)
-        //     },
-        //     template: `
-        //         <label>
-        //             姓名：
-        //             <input type="text" v-on="$listeners"/>
-        //         </label>
-        //     `
-        // })
-        // Vue.component('base-input1', {    
-        //     props: {
-        //         value: String
-        //     },
-        //     template: `
-        //         <input type="text" 
-        //             :value="value" 
-        //             @input="$emit('change', $event.target.value)" />
-        //     `
-        // })
-        // Vue.component('base-input2', {  
-        //     model: {
-        //         prop: 'checked',
-        //         event: 'change'
-        //     },
-        //     props: {
-        //         checked: Boolean
-        //     },
-        //     // template: `
-        //     //     <input type="checkbox" 
-        //     //         :checked="checked" 
-        //     //         @input="$emit('change', $event.target.checked)" />
-        //     // `
-        // })
-        Vue.component('base-input3', {
-            props: {
-                value: String
+        Vue.component('my-comp', {
+            data() {
+                return {
+                    msg: 'hello slot',
+                    user: {
+                        name: 'abc',
+                        age: 18,
+                        sex: 'male',
+                        hobby: 'game',
+                        job: 'student'
+                    }
+                }
             },
+            // template: `<div>
+            //             <slot></slot>
+            //         </div>`
+            // template: `
+            //     <button>
+            //         <slot>提交</slot>
+            //     </button>
+            // `
+            // template: `
+            //     <div>
+            //         <header>
+            //             <slot name="header"></slot>
+            //         </header>
+            //         <main>
+            //             <slot></slot>
+            //         </main>
+            //         <footer>
+            //             <slot name="footer"></slot>
+            //         </footer>
+            //     </div>
+            // `
             template: `
-                <input type="text" 
-                    :value="value" 
-                    @input="$emit('update:value', $event.target.value)" />
+                <p>
+                    <slot :user="user"></slot>
+                </p>
             `
         })
         const vm = new Vue({
             el: '#app',
             data: {
-                blogList: [
-                    {
-                        title: '标题',
-                        content: '内容1',
-                        id: 1
-                    },
-                    {
-                        title: '标题',
-                        content: '内容1',
-                        id: 2
-                    }
-                ],
-                postFontSize: 1,
-                val: '123',
-                checked: false,
-                obj: {
-                    value: '123'
-                }
+                // msg: 'hello vue'
             },
             methods: {
-                changeFontSize(e) {
-                    // console.log(e);
-                    this.postFontSize += e
-                },
-                onFocus() {
-                    console.log('获取焦点')
-                },
-                onBlur() {
-                    console.log('失去焦点')
-                }
+                
             }
         })
     </script>
