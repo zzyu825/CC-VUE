@@ -10,92 +10,69 @@
 
 <body>
     <div id="app">
-       <!-- <my-comp>
-            我是插槽内容
-            <span>{{ msg }}</span>
-       </my-comp> -->
-       <!-- <my-comp>
-            提交 
-            头部
-       </my-comp> -->
-       <!-- <my-comp>
-            <template v-slot:header>
-                <h1>头部</h1>
-            </template>
-            <template v-slot:default>
-                <h2>内容</h2>
-            </template>
-            <template #footer>
-                <h3>底部</h3>
-            </template>
-        </my-comp> -->
-        <!-- <my-comp>
-            <template v-slot="slotProp">
-                {{ slotProp.user.name }}
-            </template>
-        </my-comp>
-        <my-comp v-slot="slotProp">
-            {{ slotProp.user.age }}
-        </my-comp>
-        <my-comp v-slot="{ user }">
-            {{ user.sex }}
-        </my-comp>
-        <my-comp v-slot="{ user: person }">
-            {{ person.hobby }}
-        </my-comp> -->
-        <my-comp v-slot="{ user = { name: '123' } }">
-            {{ user.name }}
-        </my-comp>
+        <button 
+            v-for="page of pages"
+            :key="page.id"
+            @click="comp = page.cmp"
+        >{{ page.name }}</button>
+        <keep-alive include="">
+            <component :is="comp"></component>
+        </keep-alive>
     </div>
     <script src="./vue.js"></script>
     <script>
-        Vue.component('my-comp', {
-            data() {
+        Vue.component('post-base', {
+            data () {
                 return {
-                    msg: 'hello slot',
-                    user: {
-                        name: 'abc',
-                        age: 18,
-                        sex: 'male',
-                        hobby: 'game',
-                        job: 'student'
-                    }
+                    postComp: undefined,
+                    posts: [
+                        { title: '标题1', content: { template: `<div>内容1</div>` }, id: 10 },
+                        { title: '标题2', content: { template: `<div>内容2</div>` }, id: 11 },
+                        { title: '标题3', content: { template: `<div>内容3</div>` }, id: 12 }
+                    ]
                 }
             },
-            // template: `<div>
-            //             <slot></slot>
-            //         </div>`
-            // template: `
-            //     <button>
-            //         <slot>提交</slot>
-            //     </button>
-            // `
-            // template: `
-            //     <div>
-            //         <header>
-            //             <slot name="header"></slot>
-            //         </header>
-            //         <main>
-            //             <slot></slot>
-            //         </main>
-            //         <footer>
-            //             <slot name="footer"></slot>
-            //         </footer>
-            //     </div>
-            // `
+            mounted () {
+                this.postComp = this.posts[0].content;
+            },
+            activated () {
+                console.log('博客组件激活')
+            },
+            deactivated () {
+                console.log('博客组件停用')
+            },
             template: `
-                <p>
-                    <slot :user="user"></slot>
-                </p>
+                <div>
+                    <button
+                        v-for="post of posts"
+                        :key="post.id"
+                        @click="postComp = post.content"
+                    >{{ post.title }}</button>
+                    <keep-alive>
+                        <component :is="postComp"></component>
+                    </keep-alive>
+                </div>
             `
+        });
+        Vue.component('post-more', {
+            template: `
+                <div>更多内容</div>
+            `,
+            activated () {
+                console.log('更多组件激活')
+            },
+            deactivated () {
+                console.log('更多组件停用')
+            },
         })
         const vm = new Vue({
             el: '#app',
             data: {
-                // msg: 'hello vue'
-            },
-            methods: {
-                
+                comp: 'post-base',
+                pages: [
+                    { name: '博客', cmp: 'post-base', id: 0 },
+                    { name: '更多', cmp: 'post-more', id: 1 },
+                ]
             }
         })
     </script>
