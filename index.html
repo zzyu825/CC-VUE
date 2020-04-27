@@ -5,108 +5,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="./pikaday.css">
     <title>Document</title>
 </head>
 
 <body>
     <div id="app">
-        <my-comp ref="cmp">
-            <comp-a>
-                <comp-b>
-                    <comp-c></comp-c>
-                </comp-b>
-            </comp-a>
-        </my-comp>
+        <my-comp @click="fn"></my-comp>
+        <my-comp1></my-comp1>
     </div>
     <script src="./vue.js"></script>
-    <script src="./pikaday.js"></script>
     <script>
+        Vue.prototype.$bus = new Vue();
         Vue.component('my-comp', {
-            provide() {
-                return {
-                    share: this.share
-                }
-            },
             data() {
                 return {
-                    share: 'share'
+                    name: 'abc'
                 }
-            },
-            template: `
-                <div><slot></slot></div>
-            `
-        });
-        Vue.component('comp-a', {
-            inject: ['share'],
-            mounted () {
-                // console.log(this.$parent.share);
-                console.log(this.share);
-            },
-            template: `
-                <div><slot></slot></div>
-            `
-        });
-        Vue.component('comp-b', {
-            inject: ['share'],
-            mounted () {
-                // console.log(this.$root.msg);
-                // this.$root.msg = 'hello world b';
-                // console.log(this.$parent.share || this.$parent.$parent.share);
-                console.log(this.share)
-            },
-            template: `
-                <div><slot></slot></div>
-            `
-        });
-        Vue.component('comp-c', {
-            mounted () {
-                // console.log(this.$root.msg);
-                // this.$root.msg = 'hello world c'
-                // this.picker = new Pikaday({
-                //     field: this.$refs.input,
-                //     format: 'YYYY-MM-DD',
-                // });
-                // const picker = new Pikaday({
-                //     field: this.$refs.input,
-                //     format: 'YYYY-MM-DD',
-                // });
-                // this.$once('hook:beforeDestroy', () => {
-                //     picker.destroy();
-                // })
-
-                this.deletePicker('input1')
-                this.deletePicker('input2')
-            },
-            beforeDestroy () {
-                // this.picker.destroy();
             },
             methods: {
-                deletePicker(refName) {
-                    const picker = new Pikaday({
-                        field: this.$refs[refName],
-                        format: 'YYYY-MM-DD',
-                    });
-                    this.$once('hook:beforeDestroy', () => {
-                        picker.destroy();
-                    })
+                onClick() {
+                    // console.log(this.$listeners);
+                    // this.$listeners.click(this.name);
+                    // console.log(this.$bus);
+                    this.$bus.$emit('click', this.name)
                 }
             },
             template: `
-                <div>
-                    <button @click="$destroy()">销毁组件</button>
-                    <input type="text" ref="input1"/>
-                    <input type="text" ref="input2"/>
-                </div>
+                <div @click="onClick">my-comp</div>
+            `
+        });
+        Vue.component('my-comp1', {
+            mounted() {
+                this.$bus.$on('click', data => {
+                    console.log(data)
+                })
+            },
+            template: `
+                <div>my-comp1</div>
             `
         })
         const vm = new Vue({
             el: '#app',
             data: {
-                msg: 'hello vue'
+
             },
             mounted () {
-                console.log(this.$refs)
+                // console.log(this.$children[0].name);
+            },
+            methods: {
+                fn(name) {
+                    console.log(name);
+                }
             }
         })
     </script>
