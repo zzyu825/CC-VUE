@@ -10,40 +10,72 @@
 
 <body>
     <div id="app">
-        <my-comp @click="fn"></my-comp>
         <my-comp1></my-comp1>
+        <my-comp2></my-comp2>
     </div>
     <script src="./vue.js"></script>
     <script>
-        Vue.prototype.$bus = new Vue();
-        Vue.component('my-comp', {
-            data() {
-                return {
-                    name: 'abc'
+        Vue.mixin({
+            created() {
+                // console.log('全局混入')
+                const myOption = this.$options.myOption;
+                if (myOption) {
+                    console.log(myOption);
                 }
+            }
+        })
+        const mixin = {
+            data () {
+                return {
+                    name: 'abc',
+                    msg: 123
+                }
+            },
+            mounted () {
+                // console.log('mixin')
+                // this.fn();
             },
             methods: {
-                onClick() {
-                    // console.log(this.$listeners);
-                    // this.$listeners.click(this.name);
-                    // console.log(this.$bus);
-                    this.$bus.$emit('click', this.name)
+                fn() {
+                    console.log('mixin')
+                }
+            }
+        }
+        Vue.component('my-comp1', {
+            myOption: 'aaa',
+            data () {
+                return {
+                    // name: 'abc'
+                    msg: 456
                 }
             },
-            template: `
-                <div @click="onClick">my-comp</div>
-            `
-        });
-        Vue.component('my-comp1', {
-            mounted() {
-                this.$bus.$on('click', data => {
-                    console.log(data)
-                })
+            mixins: [mixin],
+            mounted () {
+                // console.log(this.name);
+                // console.log(this.msg);
+                // console.log('comp1')
+                this.fn();
             },
-            template: `
-                <div>my-comp1</div>
-            `
-        })
+            methods: {
+                fn() {
+                    // console.log('comp1')
+                }
+            },
+            template: `<div>comp1</div>`
+        });
+        Vue.component('my-comp2', {
+            data () {
+                return {
+                    // name: 'abc'
+                }
+            },
+            mixins: [mixin],
+            mounted () {
+                // console.log(this.name)
+                // console.log('comp2')
+            },
+            template: `<div>comp2</div>`
+        });
         const vm = new Vue({
             el: '#app',
             data: {

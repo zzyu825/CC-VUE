@@ -1,94 +1,87 @@
-# 组件_通信
+# 混入
+## 基础
+混入 (mixin) 提供了一种非常灵活的方式，来分发 Vue 组件中的可复用功能。
+一个混入对象可以包含任意组件选项。当组件使用混入对象时，所有混入对象的选项将被“混合”进入该组件本身的选项。
 
-## prop 
-父组件传递数据给子组件时，可以通过特性传递。
-
-推荐使用这种方式进行父->子通信。
-
-## $emit
-子组件传递数据给父组件时，触发事件，从而抛出数据。
-
-推荐使用这种方式进行子->父通信。
-
-### v-model
-
-### .sync
-
-## $attrs
-祖先组件传递数据给子孙组件时，可以利用$attrs传递。
-
-demo或小型项目可以使用$attrs进行数据传递，中大型项目不推荐，数据流会变的难于理解。
-
-$attrs的真正目的是撰写基础组件，将非Prop特性赋予某些DOM元素。
-
-## $listeners
-可以在子孙组件中执行祖先组件的函数，从而实现数据传递。
-
-demo或小型项目可以使用$listeners进行数据传递，中大型项目不推荐，数据流会变的难于理解。
-
-$listeners的真正目的是将所有的事件监听器指向这个组件的某个特定的子元素。
-
-## $root
-可以在子组件中访问**根**实例的数据。
-
-对于 demo 或非常小型的有少量组件的应用来说这是很方便的。中大型项目不适用。会使应用难于调试和理解。
-
-## $parent
-可以在子组件中访问**父**实例的数据。
-
-对于 demo 或非常小型的有少量组件的应用来说这是很方便的。中大型项目不适用。会使应用难于调试和理解。
-
-## $children
-可以在父组件中访问**子**实例的数据。
-
-对于 demo 或非常小型的有少量组件的应用来说这是很方便的。中大型项目不适用。会使应用难于调试和理解。
-
-## ref
-可以在父组件中访问**子**实例的数据。
-
-$refs 只会在组件渲染完成之后生效，并且它们不是响应式的，适用于demo或小型项目。
-
-## provide & inject
-祖先组件提供数据（provide），子孙组件按需注入（inject）。
-
-会将组件的阻止方式，耦合在一起，从而使组件重构困难，难以维护。不推荐在中大型项目中使用，适用于一些小组件的编写。
-
-## eventBus(事件总线)
 ```js
-Vue.prototype.$bus = new Vue();
-```
-```js
-Vue.component('cmp-a', {
-  data () {
-    return {
-      a: 'a'
-    }
+const mixin = {
+  created () {
+    this.hello();
   },
   methods: {
-    onClick () {
-      this.$bus.$emit('click', this.a)
-    }
-  },
-  template: `
-    <div>
-      <button @click="onClick">点击</button>
-    </div>
-  `,
-})
-```
-```js
-Vue.component('cmp-b', {
-  mounted () {
-    this.$bus.$on('click', data => {
-      console.log(data);
-    })
-  },
-  template: `
-    <div>b</div>
-  `,
-})
-```
-非父子组件通信时，可以使用这种方法，但仅针对于小型项目。中大型项目使用时，会造成代码混乱不易维护。
+    hello () {
+      console.log('hello，我是混入中的函数');
+    },
+  }
+}
 
-## Vuex
-状态管理，中大型项目时强烈推荐使用此种方式，日后再学~
+Vue.component('my-cmp', {
+  mixins: [mixin],
+  template: `
+    <div>xx</div>
+  `
+})
+```
+
+## 选项合并
+当组件和混入对象含有同名选项时，这些选项会以恰当的方式进行“合并”。
+
+合并数据，以组件数据优先：
+
+```js
+var mixin = {
+  data () {
+    return {
+      msg: 'hello',
+    }
+  }
+}
+new Vue({
+  mixins: [mixin],
+  data: {
+    msg: 'goodbye',
+  },
+  created: function () {
+    console.log(this.msg)
+})
+```
+
+合并钩子函数，将合并为一个数组。先调用混入对象的钩子，再调用组件自身钩子。
+
+```js
+var mixin = {
+  created () {
+    console.log('混入对象钩子')
+  }
+}
+
+new Vue({
+  el: '#app',
+  mixins: [mixin],
+  created () {
+    console.log('组件钩子')
+  }
+})
+```
+
+合并值为对象的选项，如 methods、components 等，将被合并为同一个对象。两个对象键名冲突时，取组件对象的键值对。
+
+## 全局混入
+混入也可以进行全局注册。使用时格外小心！一旦使用全局混入，它将影响每一个之后创建的 Vue 实例。使用恰当时，这可以用来为自定义选项注入处理逻辑。
+```js
+// 为自定义的选项 'myOption' 注入一个处理器。
+Vue.mixin({
+  created () {
+    const myOption = this.$options.myOption
+    if (myOption) {
+      console.log(myOption)
+    }
+  }
+})
+
+new Vue({
+  myOption: 'hello!'
+})
+```
+
+谨慎使用全局混入，因为它会影响每个单独创建的 Vue 实例 (包括第三方组件)。大多数情况下，只应当应用于自定义选项。
