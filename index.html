@@ -10,84 +10,52 @@
 
 <body>
     <div id="app">
-        <my-comp1></my-comp1>
-        <my-comp2></my-comp2>
+        <!-- {{ msg | filter('a') | filter1('b') }} -->
+        {{ msg | capitalize }}
+        {{ money | toMoney }}
+        {{ play | addWan }}
     </div>
     <script src="./vue.js"></script>
     <script>
-        Vue.mixin({
-            created() {
-                // console.log('全局混入')
-                const myOption = this.$options.myOption;
-                if (myOption) {
-                    console.log(myOption);
-                }
+        // Vue.filter('filter', (val, a) => {
+        //     console.log(val, a)
+        //     return '123'
+        // })
+        // Vue.filter('filter1', (val, b) => {
+        //     console.log(val, b)
+        // })
+        Vue.filter('capitalize', val => {
+            if (!val) {
+                return;
             }
+            return val.charAt(0).toUpperCase() + val.slice(1);
+        });
+        Vue.filter('toMoney', val => {
+            if (!val) {
+                return;
+            }
+            return val.toLocaleString();
+        });
+        Vue.filter('addWan', val => {
+            if (!val) {
+                return;
+            }
+            if (val > 10000) {
+                return (val / 10000).toFixed(1) + '万';
+            }
+            return val;
         })
-        const mixin = {
-            data () {
-                return {
-                    name: 'abc',
-                    msg: 123
-                }
-            },
-            mounted () {
-                // console.log('mixin')
-                // this.fn();
-            },
-            methods: {
-                fn() {
-                    console.log('mixin')
-                }
-            }
-        }
-        Vue.component('my-comp1', {
-            myOption: 'aaa',
-            data () {
-                return {
-                    // name: 'abc'
-                    msg: 456
-                }
-            },
-            mixins: [mixin],
-            mounted () {
-                // console.log(this.name);
-                // console.log(this.msg);
-                // console.log('comp1')
-                this.fn();
-            },
-            methods: {
-                fn() {
-                    // console.log('comp1')
-                }
-            },
-            template: `<div>comp1</div>`
-        });
-        Vue.component('my-comp2', {
-            data () {
-                return {
-                    // name: 'abc'
-                }
-            },
-            mixins: [mixin],
-            mounted () {
-                // console.log(this.name)
-                // console.log('comp2')
-            },
-            template: `<div>comp2</div>`
-        });
         const vm = new Vue({
             el: '#app',
             data: {
-
+                msg: 'abc',
+                money: 454654324,
+                play: 12345
             },
-            mounted () {
-                // console.log(this.$children[0].name);
-            },
-            methods: {
-                fn(name) {
-                    console.log(name);
-                }
+            filters: {
+                // filter() {
+                //     return '456'
+                // }
             }
         })
     </script>
