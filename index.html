@@ -10,53 +10,141 @@
 
 <body>
     <div id="app">
-        <!-- {{ msg | filter('a') | filter1('b') }} -->
-        {{ msg | capitalize }}
-        {{ money | toMoney }}
-        {{ play | addWan }}
+        <!-- <my-comp v-focus></my-comp> -->
+        <!-- <input type="text" v-focus:inp.x.y="name" v-if="flag"> -->
+        <!-- <input type="text" v-myshow="flag"> -->
+        <!-- <input type="text" v-mymodel="val">{{ val }} -->
+        <input type="text" v-slice:[num].number="val">{{ val }}
     </div>
     <script src="./vue.js"></script>
     <script>
-        // Vue.filter('filter', (val, a) => {
-        //     console.log(val, a)
-        //     return '123'
+        Vue.component('my-comp', {
+            template: `<div><p>my-comp</p></div>`
+        })
+        Vue.directive('focus', {
+            bind(el, binding, Vnode) {
+                console.log('bind:指令第一次绑定到元素，只执行一次');
+                el.focus();
+                console.log(el);
+                console.log(binding);
+                console.log(Vnode)
+            },
+            inserted(el) {
+                el.focus();
+                console.log('被绑定元素插入父节点时调用');
+            },
+            update(el, binding) {
+                console.log('vnode更新时调用，不管子节点是否已更新');
+                console.log(binding);
+            },
+            componentUpdated() {
+                console.log('vnode及子节点全部更新后调用')
+            },
+            unbind() {
+                console.log('元素解绑时调用，只执行一次')
+            }
+        })
+        // Vue.directive('myshow', {
+        //     bind(el, binding) {
+        //         const { value } = binding;
+        //         const display = value ? '' : 'none'
+        //         el.style.display = display;
+        //     },
+        //     update(el, binding) {
+        //         const { value } = binding;
+        //         const display = value ? '' : 'none'
+        //         el.style.display = display;
+        //     }
         // })
-        // Vue.filter('filter1', (val, b) => {
-        //     console.log(val, b)
+        Vue.directive('myshow', (el, binding) => {
+            const { value } = binding;
+            const display = value ? '' : 'none'
+            el.style.display = display;
+        })
+        Vue.directive('mymodel', {
+            bind(el, binding, vnode) {
+                const { value, expression } = binding;
+                const vm = vnode.context;
+                el.value = value;
+                el.oninput = e => {
+                    vm[expression] = el.value;
+                }
+            },
+            update(el, binding) {
+                const { value } = binding;
+                el.value = value;
+            }
+        })
+        // Vue.directive('slice', {
+        //     bind(el, binding, vnode) {
+        //         let { value, expression, arg, modifiers } = binding;
+        //         const vm = vnode.context;
+        //         arg = arg || 5;
+        //         if (modifiers.number) {
+        //             value = value.replace(/[^0-9]/g, '');
+        //         }
+        //         el.value = value.slice(0, arg);
+        //         vm[expression] =  value.slice(0, arg);
+        //         el.oninput = e => {
+        //             let { value } = el;
+        //             if (modifiers.number) {
+        //                 value = value.replace(/[^0-9]/g, '');
+        //             }
+        //             el.value = value.slice(0, arg);
+        //             vm[expression] = value.slice(0, arg);
+        //         }
+        //     },
+        //     update(el, binding, vnode) {
+        //         let { value, arg, expression, modifiers } = binding;
+        //         const vm = vnode.context;
+        //         if (modifiers.number) {
+        //             value = value.replace(/[^0-9]/g, '');
+        //         }
+        //         el.value = value.slice(0, arg);
+        //         vm[expression] = value.slice(0, arg);
+        //         el.oninput = e => {
+        //             let { value } = el;
+        //             if (modifiers.number) {
+        //                 value = value.replace(/[^0-9]/g, '');
+        //             }
+        //             el.value = value.slice(0, arg);
+        //             vm[expression] = value.slice(0, arg);
+        //         }
+        //     }
         // })
-        Vue.filter('capitalize', val => {
-            if (!val) {
-                return;
+        Vue.directive('slice', (el, binding, vnode) => {
+            let { value, expression, arg, modifiers } = binding;
+            const vm = vnode.context;
+            arg = arg || 5;
+            if (modifiers.number) {
+                value = value.replace(/[^0-9]/g, '');
             }
-            return val.charAt(0).toUpperCase() + val.slice(1);
-        });
-        Vue.filter('toMoney', val => {
-            if (!val) {
-                return;
+            el.value = value.slice(0, arg);
+            vm[expression] =  value.slice(0, arg);
+            el.oninput = e => {
+                let { value } = el;
+                if (modifiers.number) {
+                    value = value.replace(/[^0-9]/g, '');
+                }
+                el.value = value.slice(0, arg);
+                vm[expression] = value.slice(0, arg);
             }
-            return val.toLocaleString();
-        });
-        Vue.filter('addWan', val => {
-            if (!val) {
-                return;
-            }
-            if (val > 10000) {
-                return (val / 10000).toFixed(1) + '万';
-            }
-            return val;
         })
         const vm = new Vue({
             el: '#app',
             data: {
-                msg: 'abc',
-                money: 454654324,
-                play: 12345
-            },
-            filters: {
-                // filter() {
-                //     return '456'
-                // }
+                name: '123',
+                flag: false,
+                val: '123abc',
+                num: 3
             }
+            // directives: {
+            //     focus: {
+            //         inserted(el) {
+            //             el.focus();
+            //         }
+            //     }
+            // }
         })
     </script>
 </body>
