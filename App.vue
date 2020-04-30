@@ -1,29 +1,19 @@
 <template>
-    <div>
-        father
-        {{ msg }}
-        <p>我是父组件p元素</p>
-        <base-son/>
-    </div>
+  <div class="app">
+    <date-picker />
+  </div>
 </template>
 
 <script>
-import baseSon from './Son'
+import DatePicker from './DatePicker';
 
 export default {
-    components: {
-        baseSon
-    },
-    data () {
-        return {
-            msg: 'hello vue'
-        }
-    }
+  components: {
+    DatePicker,
+  },  
 }
 </script>
 
-<style>
-    div {
-        background-color: #f00;
-    }
+<style scoped>
+
 </style>
