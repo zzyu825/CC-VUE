@@ -1,63 +1,15 @@
-# 练习_树形组件
+# 利用脚手架搭建项目
 
-数据：
+vue create 项目名
+
+vue ui 图像化界面创建
+
+.vuerc 预设配置文件
+
+拉取 2.x 模板 (旧版本)
 
 ```js
-data: [
-  {
-    label: "一级 1",
-    children: [
-      {
-        label: "二级 1-1",
-        children: [
-          {
-            label: "三级 1-1-1"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    label: "一级 2",
-    children: [
-      {
-        label: "二级 2-1",
-        children: [
-          {
-            label: "三级 2-1-1"
-          }
-        ]
-      },
-      {
-        label: "二级 2-2",
-        children: [
-          {
-            label: "三级 2-2-1"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    label: "一级 3",
-    children: [
-      {
-        label: "二级 3-1",
-        children: [
-          {
-            label: "三级 3-1-1"
-          }
-        ]
-      },
-      {
-        label: "二级 3-2",
-        children: [
-          {
-            label: "三级 3-2-1"
-          }
-        ]
-      }
-    ]
-  }
-]
+npm install -g @vue/cli-init
+# `vue init` 的运行效果将会跟 `vue-cli@2.x` 相同
+vue init webpack my-project
 ```
