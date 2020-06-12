@@ -18,7 +18,7 @@
 ```
 - 问：为什么data会直接出现在vm实例对象中咧？
 > 答：当创建vue实例时，vue会将data中的成员代理给vue实例，目的是为了实现响应式，监控数据变化，执行某个监听函数（怎么实现的？想一想，提示：Object.defineProperty，试着实现一下）
-> vue 2.0 vue 3.0(alpha beta release)
+> vue 2.x vue 3.0(alpha beta release)
 
 - 问：实例中除了data数据外，其他东西是啥子？
 > 为了防止名称冲突。因为会将data中数据代理给vue，假如说我们自己写的data名称和vue中自带的属性冲突了，那么就会覆盖vue内部的属性，所以vue会把自己内部的属性成员名称前加上\$或\_，如果加上的是\$，代表是我们可以使用的，如果加上的是\_，是vue自己内部使用的方法或属性，我们不需要调用
@@ -95,7 +95,7 @@ console.log(vm.$el.innerHTML); // 老王。此时页面还未重新渲染
 
 ## vm.$nextTick & Vue.nextTick
 - 如何在更改数据后，拿到渲染后的页面上的值？
-> 答：利用vm.\$nextTick或Vue.nextTick，在页面重新渲染，DOM更新后，会立刻执行vm.$nextTick
+> 答：利用vm.$nextTick或Vue.nextTick，在页面重新渲染，DOM更新后，会立刻执行vm.$nextTick
 > 在Vue生命周期的created()钩子函数进行的DOM操作一定要放在Vue.nextTick()的回调函数中
 ```html
 <div id="app">{{ msg }}</div>
