@@ -1,2 +1,2 @@
-# vue-lesson
+# Vue-lesson
 course source code download
