@@ -16,7 +16,7 @@
             <div>
                 <span class="option" 
                     v-for="(option, index) of options"
-                    :class="{active: optionActive[index]}"
+                    :class="{active: index === i}"
                     @click="filterBySex(index, option)"
                 >
                     {{ option }}
@@ -41,10 +41,11 @@
         const vm = new Vue({
             el: '#app',
             data: {
+                i: 2,
                 keyValue: '',
                 sex: ['m', 'f'],
                 options: ['Male', 'Female', 'All'],
-                optionActive: [false, false, true],
+                // optionActive: [false, false, true],
                 personArr: [
                     {
                         name: '王港',
@@ -84,13 +85,17 @@
             },
             methods: {
                 filterBySex(index, option) {
-                    if (this.optionActive[index]) {
+                    // if (this.optionActive[index]) {
+                    //     return;
+                    // }
+                    // for (let i = 0; i < this.optionActive.length; i++) {    
+                    //     this.optionActive[i] = false;
+                    // }
+                    // this.optionActive[index] = 'true';
+                    if (this.index === i) {
                         return;
-                    }
-                    for (let i = 0; i < this.optionActive.length; i++) {    
-                        this.optionActive[i] = false;
-                    }
-                    this.optionActive[index] = 'true';
+                    };
+                    this.index = i;
                     this.sex.length = 0;
                     switch (option) {
                         case 'Male':
