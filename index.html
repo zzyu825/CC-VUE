@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,52 +7,50 @@
     <title>Document</title>
     <link rel="stylesheet" href="./index.css">
 </head>
-
 <body>
     <div id="app">
-        <div class="store">
-            <input type="checkbox" class="select-all" v-model="checkedAll">
-            <span class="store-name">cc教育Web前端</span>
-        </div>
-        <ul class="course-list">
-            <li class="course" v-for="(item, index) of courseList" :key="item.id">
-                <input type="checkbox" class="course-radio" v-model="item.checked">
+       <div class="store">
+           <input type="checkbox" class="select-all" v-model="checkedAll">
+           <span class="store-name">cc教育Web前端</span>
+       </div>
+       <ul class="course-list">
+           <li v-for="course of courseList" class="course" :key="course.id">
+                <!-- <input type="checkbox" class="course-radio" v-model="course.checked"> -->
+                <input type="checkbox" class="course-radio" v-model="checked" :value="course.title">
                 <div class="poster">
-                    <img :src="item.poster" :alt="item.title">
+                    <img :src="course.poster" :alt="course.title">
                 </div>
                 <div class="content">
-                    <div class="title">{{ item.title }}</div>
+                    <div class="title">{{ course.title }}</div>
                     <div class="price-container">
-                        <div class="price">￥{{ item.price }}</div>
+                        <div class="price">￥{{ course.price }}</div>
                         <div class="control-cart">
-                            <button class="minus-cart" @click="controlBtn('-', item)">-</button>
-                            <input type="text" class="cart-num" v-model.number="item.cart">
-                            <button class="add-cart" @click="controlBtn('+', item)">+</button>
+                            <button class="minus-cart" @click="changeNum('-', course)">-</button>
+                            <input type="text" class="cart-num" v-model="course.cart">
+                            <button class="add-cart" @click="changeNum('+', course)">+</button>
                         </div>
                     </div>
                 </div>
-            </li>
-        </ul>
-        <div class="control">
-            <div class="select">
-                <input type="checkbox" class="select-all" id="all" v-model="checkedAll">
-                <label for="all">全选</label>
-            </div>
-            <div class="price-container">
-                <span>合计：</span>
-                <span class="price">￥{{ selectTotalPrice }}</span>
-                <button class="accounts">结算({{ selectNum }})</button>
-            </div>
-        </div>
+           </li>
+       </ul>
+       <div class="control">
+           <div class="select">
+               <input type="checkbox" class="select-all" id="all" v-model="checkedAll">
+               <label for="all">全选</label>
+           </div>
+           <div class="price-content">
+               <span>合计：</span>
+               <span class="price">￥{{ totalPrice }}</span>
+               <button class="accounts">结算({{ selectCourse.length }})</button>
+           </div>
+       </div>
     </div>
-
     <script src="./vue.js"></script>
     <script>
         const vm = new Vue({
             el: '#app',
             data: {
-                priceSum: 0,
-                countSum: 0,
+                checked: [],
                 courseList: [
                     {
                         poster: 'https://img.alicdn.com/bao/uploaded/i1/TB1VtAgdlWD3KVjSZFs3KIqkpXa_040950.jpg_80x80.jpg',
@@ -99,53 +96,51 @@
                     },
                 ]
             },
-            methods: {
-                controlBtn(type, item) {
-                    let count = item.cart;
-                    if (type === '-') {
-                        if (count === 1) {
-                            alert('受不了了，宝贝不能减少了哦')
+            computed: {
+                selectCourse() {
+                    // return this.courseList.filter(item => item.checked);
+                    return this.courseList.filter(item => this.checked.includes(item.title));
+                },              
+                totalPrice() {
+                    let price = 0;
+                    for (const course of this.selectCourse) {
+                        price += course.price * course.cart;
+                    }
+                    return price;
+                },
+                // checkedAll() {
+                //     return this.courseList.every(item => item.checked);
+                // }
+                checkedAll: {
+                    get() {
+                        // return this.courseList.every(item => item.checked);
+                        return this.courseList.every(item => this.checked.includes(item.title));
+                    },
+                    set(newVal) {
+                        if(newVal) {
+                            for (const course of this.courseList) {
+                                this.checked.push(course.title);
+                            }
                         } else {
-                            item.cart--;
+                            this.checked = [];
                         }
-                    } else {
-                        item.cart++;
+                        // for (const course of this.courseList) {
+                        //     course.checked = newVal;
+                        // }
                     }
                 }
             },
-            computed: {
-                selectList() {
-                    return this.courseList.filter(item => item.checked);
-                },
-                selectTotalPrice() {
-                    let price = 0;
-                    this.selectList.forEach(item => {
-                        price += item.price * item.cart;
-                    });
-                    return price;
-                },
-                selectNum() {
-                    return this.selectList.length;
-                },
-                // checkedAll() {
-                //     return this.courseList.every(item => item.checked)
-                // },
-                checkedAll: {
-                    get() {
-                        return this.courseList.every(item => item.checked)
-                    },
-                    set(val) {
-                        this.courseList.forEach(item => {
-                            item.checked = val;
-                        })
-                    }
+            methods: {
+                changeNum(type, course) {
+                    let { cart } = course;
+                    type === '-' ? (cart === 1 ? alert('受不了了，宝贝不能减少了！') : course.cart--) : course.cart++;
                 }
             }
         });
-        vm.courseList.forEach(ele => {
-            vm.$set(ele, 'checked', false)
-        });
-    </script>
+        for (const course of vm.courseList) {
+            vm.$set(course, 'checked', false);
+        }
+        // every some
+    </script>    
 </body>
-
 </html>
