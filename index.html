@@ -1,64 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="./index.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
 </head>
-
 <body>
     <div id="app">
-        <div class="logo">
-            <img src="https://www.baidu.com/img/bd_logo1.png?where=super" alt="点击一下，了解更多">
-        </div>
-        <div class="search-box">
-            <span class="search-area">
-                <input type="text" maxlength="100" v-model="inputVal" @focus="() => inputFocus = true"
-                    @blur="() => inputFocus = false">
+       <div class="logo">
+           <img src="https://www.baidu.com/img/bd_logo1.png?where=super" alt="点击一下，了解更多">
+       </div>
+       <div class="search-box">
+           <span class="search-area">
+                <input type="text" maxlength="100" v-model="inputVal" 
+                    @focus="flag = true"
+                    @blur="flag = false"
+                >
                 <span class="icon icon-paizhao"></span>
-            </span>
-            <span class="search-btn">百度一下</span>
-        </div>
-
-        <ul class="search-list" v-show="inputFocus && searchResList.length">
-            <li v-for="res in searchResList" :key="res">
-                {{ res }}
-            </li>
-        </ul>
+           </span>
+           <span class="search-btn">百度一下</span>
+       </div>
+       <ul class="search-list" v-if="flag && searchList.length" v-cloak>
+           <li v-for="res of searchList" :key="res">
+               {{ res }}
+           </li>
+       </ul>
     </div>
     <script src="./vue.js"></script>
     <script src="./jquery.js"></script>
+    <script src="./fetchJsonp.js"></script>
     <script>
+
         const vm = new Vue({
             el: '#app',
             data: {
-                inputFocus: false,
                 inputVal: '',
-                searchResList: []
+                searchList: [],
+                flag: false
             },
             methods: {
-                searchRes(res) {
-                    this.searchResList = res.s;
+                search(resp) {
+                    // console.log(resp);
+                    this.searchList = resp.s;
                 }
             },
             watch: {
                 inputVal() {
-                    $.ajax({
-                        dataType: 'jsonp',
-                        url: 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',
-                        data: {
-                            wd: this.inputVal,
-                            cb: 'vm.searchRes'
-                        }
+                    // $.ajax({
+                    //     url: 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',
+                    //     dataType: 'jsonp',
+                    //     data: {
+                    //         wd: this.inputVal,
+                    //         cb: 'vm.search'
+                    //     }
+                    // })
+                    fetchJsonp(`https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=${this.inputVal}`, {
+                        jsonpCallback: 'cb'
+                    }).then(resp => resp.json()).then(resp => {
+                        console.log(resp, this);
+                        this.searchList = resp.s;
                     })
                 }
             }
-
         });
-    </script>
+    </script>    
 </body>
-
 </html>
