@@ -1,0 +1,8 @@
+ajax（一套标准/概念）不刷新页面前提下，和服务端的数据交互
+
+原生js实现ajax：xhr（xmlHttpRequest）底层api 
+jquery实现ajax：对xhr做的封装 $.ajax()
+fetch实现ajax：其他的底层api，没有任何封装，支持promise语法
+vue-resource实现ajax：vue官方出品的，对xhr做的封装，支持promise语法
+axios实现ajax：不是官方提出的，对xhr做的封装，支持promise语法，环境支持浏览器和node
+
