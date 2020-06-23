@@ -144,6 +144,10 @@
   color: #fb7299;
 }
 
+.hide-nav-box .nav.hideActive {
+  color: #fb7299;
+}
+
 .hide-nav-box .up {
   position: absolute;
   bottom: 0;
