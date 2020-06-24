@@ -9,10 +9,9 @@
     <link rel="stylesheet" href="./assets/reset.css">
     <link rel="stylesheet" href="./assets/index.css">
 </head>
-
 <body>
-    <div id="app" @scroll="handleScroll">
-        <!-- 头部 -->
+    <div id="app" @scroll="handelScroll">
+        <!-- header区域 -->
         <div class="header">
             <div class="logo">
                 <svg width="62" height="28" viewBox="0 0 62 28" fill="#de698c">
@@ -67,102 +66,72 @@
                 </svg>
             </div>
             <div class="search-input">
-                <svg width="12" height="18" viewBox="0 0 1024 1024">
-                    <path
-                        d="M448 128c176 0 320 144 320 320 0 73.6-25.6 147.2-73.6 204.8l-19.2 22.4-22.4 19.2C595.2 742.4 521.6 768 448 768 272 768 128 624 128 448S272 128 448 128m0-64C236.8 64 64 236.8 64 448s172.8 384 384 384c92.8 0 179.2-35.2 246.4-89.6l211.2 208c6.4 6.4 12.8 9.6 22.4 9.6s16-3.2 22.4-9.6c12.8-16 12.8-35.2 0-48l-208-208c54.4-67.2 89.6-153.6 89.6-246.4 0-211.2-172.8-384-384-384z"
-                        fill="#aaa"></path>
-                </svg>
-                <span>北冥有鱼，化而为鹏梵蒂冈连快递费过来付款定金</span>
+                <svg width="12" height="18" viewBox="0 0 1024 1024"><path d="M448 128c176 0 320 144 320 320 0 73.6-25.6 147.2-73.6 204.8l-19.2 22.4-22.4 19.2C595.2 742.4 521.6 768 448 768 272 768 128 624 128 448S272 128 448 128m0-64C236.8 64 64 236.8 64 448s172.8 384 384 384c92.8 0 179.2-35.2 246.4-89.6l211.2 208c6.4 6.4 12.8 9.6 22.4 9.6s16-3.2 22.4-9.6c12.8-16 12.8-35.2 0-48l-208-208c54.4-67.2 89.6-153.6 89.6-246.4 0-211.2-172.8-384-384-384z" fill="#aaa"></path></svg>
+                <span>我成功复刻了可爱多？!</span>
             </div>
             <div class="avatar">
-                <svg width="24" height="24" viewBox="0 0 80 80">
-                    <path fill="#e7e7e7" d="M0 0h80v80H0z"></path>
-                    <path
-                        d="M45.78 57.73h2.29a73.4 73.4 0 0 1 4.23 9.5 57.14 57.14 0 0 1 2.62 10.5 50.58 50.58 0 0 1-29.86 0 57.14 57.14 0 0 1 2.62-10.5 73.4 73.4 0 0 1 4.23-9.5h2.29l2.67 7.21 2.41-7.21h1.42l2.41 7.21zM31.72 18.51l4.87 4.87a1.8 1.8 0 0 1 0 2.55 1.8 1.8 0 0 1-2.55 0l-4.87-4.87a1.8 1.8 0 0 1 0-2.55 1.8 1.8 0 0 1 2.55 0zM48.57 18.51a1.8 1.8 0 0 1 2.55 0 1.8 1.8 0 0 1 0 2.55l-4.87 4.87a1.8 1.8 0 0 1-2.55 0 1.8 1.8 0 0 1 0-2.55z"
-                        fill="#ccc"></path>
-                    <path
-                        d="M24.2 24.22h31.6a7.2 7.2 0 0 1 7.2 7.2v20.12a7.2 7.2 0 0 1-7.2 7.2H24.2a7.2 7.2 0 0 1-7.2-7.2V31.42a7.2 7.2 0 0 1 7.2-7.2zm1 4a4.24 4.24 0 0 0-4.2 4.29v17.94a4.24 4.24 0 0 0 4.21 4.27h29.5A4.24 4.24 0 0 0 59 50.45V32.51a4.24 4.24 0 0 0-4.21-4.27z"
-                        fill="#ccc"></path>
-                    <path
-                        d="M25.88 29.84h28.24a3.22 3.22 0 0 1 3.22 3.21v16.86a3.22 3.22 0 0 1-3.22 3.21H25.88a3.22 3.22 0 0 1-3.22-3.21V33.05a3.22 3.22 0 0 1 3.22-3.21zm0 .8a2.42 2.42 0 0 0-2.42 2.41v16.86a2.42 2.42 0 0 0 2.42 2.41h28.24a2.42 2.42 0 0 0 2.42-2.41V33.05a2.42 2.42 0 0 0-2.42-2.41z"
-                        fill="#ccc"></path>
-                    <path
-                        d="M26.73 40.1l7-3.1a1.81 1.81 0 1 1 1.48 3.3l-7 3.1a1.81 1.81 0 1 1-1.48-3.3zM53.27 40.1a1.81 1.81 0 1 1-1.48 3.3l-7-3.1a1.81 1.81 0 1 1 1.48-3.3zM37.58 47.9c-1 0-1.9-.7-2.7-2a.8.8 0 0 1 .26-1.11.81.81 0 0 1 1.11.26c.54.86 1 1.23 1.33 1.23s.79-.37 1.33-1.23a.81.81 0 0 1 1.37 0c.54.86 1 1.23 1.33 1.23s.79-.37 1.33-1.23a.81.81 0 0 1 1.11-.26.8.8 0 0 1 .26 1.11c-.8 1.28-1.69 2-2.7 2a2.71 2.71 0 0 1-2-1.06 2.71 2.71 0 0 1-2.03 1.06z"
-                        fill="#ccc"></path>
-                </svg>
+                <svg width="24" height="24" viewBox="0 0 80 80"><path fill="#e7e7e7" d="M0 0h80v80H0z"></path><path d="M45.78 57.73h2.29a73.4 73.4 0 0 1 4.23 9.5 57.14 57.14 0 0 1 2.62 10.5 50.58 50.58 0 0 1-29.86 0 57.14 57.14 0 0 1 2.62-10.5 73.4 73.4 0 0 1 4.23-9.5h2.29l2.67 7.21 2.41-7.21h1.42l2.41 7.21zM31.72 18.51l4.87 4.87a1.8 1.8 0 0 1 0 2.55 1.8 1.8 0 0 1-2.55 0l-4.87-4.87a1.8 1.8 0 0 1 0-2.55 1.8 1.8 0 0 1 2.55 0zM48.57 18.51a1.8 1.8 0 0 1 2.55 0 1.8 1.8 0 0 1 0 2.55l-4.87 4.87a1.8 1.8 0 0 1-2.55 0 1.8 1.8 0 0 1 0-2.55z" fill="#ccc"></path><path d="M24.2 24.22h31.6a7.2 7.2 0 0 1 7.2 7.2v20.12a7.2 7.2 0 0 1-7.2 7.2H24.2a7.2 7.2 0 0 1-7.2-7.2V31.42a7.2 7.2 0 0 1 7.2-7.2zm1 4a4.24 4.24 0 0 0-4.2 4.29v17.94a4.24 4.24 0 0 0 4.21 4.27h29.5A4.24 4.24 0 0 0 59 50.45V32.51a4.24 4.24 0 0 0-4.21-4.27z" fill="#ccc"></path><path d="M25.88 29.84h28.24a3.22 3.22 0 0 1 3.22 3.21v16.86a3.22 3.22 0 0 1-3.22 3.21H25.88a3.22 3.22 0 0 1-3.22-3.21V33.05a3.22 3.22 0 0 1 3.22-3.21zm0 .8a2.42 2.42 0 0 0-2.42 2.41v16.86a2.42 2.42 0 0 0 2.42 2.41h28.24a2.42 2.42 0 0 0 2.42-2.41V33.05a2.42 2.42 0 0 0-2.42-2.41z" fill="#ccc"></path><path d="M26.73 40.1l7-3.1a1.81 1.81 0 1 1 1.48 3.3l-7 3.1a1.81 1.81 0 1 1-1.48-3.3zM53.27 40.1a1.81 1.81 0 1 1-1.48 3.3l-7-3.1a1.81 1.81 0 1 1 1.48-3.3zM37.58 47.9c-1 0-1.9-.7-2.7-2a.8.8 0 0 1 .26-1.11.81.81 0 0 1 1.11.26c.54.86 1 1.23 1.33 1.23s.79-.37 1.33-1.23a.81.81 0 0 1 1.37 0c.54.86 1 1.23 1.33 1.23s.79-.37 1.33-1.23a.81.81 0 0 1 1.11-.26.8.8 0 0 1 .26 1.11c-.8 1.28-1.69 2-2.7 2a2.71 2.71 0 0 1-2-1.06 2.71 2.71 0 0 1-2.03 1.06z" fill="#ccc"></path></svg>
             </div>
             <div class="download-app">下载App</div>
         </div>
-        <!-- 导航区域 -->
+        <!-- nav区域 -->
         <template v-if="navList.length">
-            <div v-for="navIndex of 2" :class="{
-                    'nav-box': navIndex === 1,
-                    'hide-nav-box': navIndex === 2,
-                    hide: navIndex === 2 && navHide
-                }">
+            <div 
+                :class="[navIndex === 1 ? 'nav-box' : navShow ? 'hide-nav-box' : 'hide-nav-box hide']" 
+                v-for="navIndex of 2"
+            >
                 <ul class="nav-list">
-                    <li class="nav" v-for="(item, index) of navList" :key="item.id" :class="{
-                            active: index === navActiveIndex,
-                            big: item.title.length === 3 && navIndex === 2,
-                        }" @click="activeChange(index)">
+                    <li class="nav" 
+                        :class="{
+                            active: index === navActiveIndex && navIndex === 1,
+                            hideActive: index === navActiveIndex && navIndex === 2,
+                            big: item.title.length === 3 && navIndex === 2
+                        }"
+                        v-for="(item, index) of navList"
+                        :key="item.id"
+                        @click="activeChange(index, navIndex)"
+                    >
                         {{ item.title }}
                     </li>
                 </ul>
-                <div class="down" v-show="navIndex === 1" @click="showNav">
-                    <svg width="16" height="32" viewBox="0 0 1024 1024">
-                        <path
-                            d="M515.2 649.6L169.6 304c-12.8-12.8-32-12.8-44.8 0s-12.8 35.2 0 48l368 364.8c12.8 12.8 32 12.8 44.8 0l361.6-361.6c12.8-12.8 12.8-35.2 0-48s-32-12.8-44.8 0L515.2 649.6z"
-                            fill="#ccc"></path>
-                    </svg>
+                <div class="down" @click="showNav" v-show="navIndex === 1">
+                    <svg width="16" height="32" viewBox="0 0 1024 1024"><path d="M515.2 649.6L169.6 304c-12.8-12.8-32-12.8-44.8 0s-12.8 35.2 0 48l368 364.8c12.8 12.8 32 12.8 44.8 0l361.6-361.6c12.8-12.8 12.8-35.2 0-48s-32-12.8-44.8 0L515.2 649.6z" fill="#ccc"></path></svg>
                 </div>
-                <div class="up" v-show="navIndex === 2" @click="showNav">
-                    <svg width="16" height="32" viewBox="0 0 1024 1024">
-                        <path
-                            d="M854.4 713.6c12.8 12.8 32 12.8 44.8 0s12.8-35.2 0-48L537.6 304c-12.8-12.8-32-12.8-44.8 0L124.8 672c-12.8 12.8-12.8 35.2 0 48s32 12.8 44.8 0l345.6-342.4 339.2 336z"
-                            fill="#ccc"></path>
-                    </svg>
+                <div class="up" @click="showNav" v-show="navIndex === 2">
+                    <svg width="16" height="32" viewBox="0 0 1024 1024"><path d="M854.4 713.6c12.8 12.8 32 12.8 44.8 0s12.8-35.2 0-48L537.6 304c-12.8-12.8-32-12.8-44.8 0L124.8 672c-12.8 12.8-12.8 35.2 0 48s32 12.8 44.8 0l345.6-342.4 339.2 336z" fill="#ccc"></path></svg>
                 </div>
             </div>
         </template>
-        <!-- 轮播图区域 -->
-        <div v-if="bannerList.length" class="banner-box">
-            <ul class="banner-list" :style="bannerStyle" @transitionend="handleTransitionEnd">
+        <!-- banner区域 -->
+        <div class="banner-box" v-if="bannerList.length">
+            <ul class="banner-list" 
+                :style="bannerStyle"
+                @transitionend="handelTransition"
+            >
                 <li class="banner" v-for="banner of bannerList" :key="banner.id">
                     <img :src="banner.poster" :alt="banner.title" class="poster">
                 </li>
             </ul>
             <ul class="index-list">
-                <li class="index" v-for="item of bannerList.length - 1" :key="item"
-                    :class="{active: item - 1 === bannerActiveIndex % 3}"></li>
+                <li class="index" 
+                    v-for="item of bannerList.length - 1"
+                    :class="{active: item - 1 === bannerIndex % (bannerList.length - 1)}"
+                ></li>
             </ul>
         </div>
-        <!-- 视频区域 -->
+        <!-- video区域 -->
         <div class="video-box" v-if="videoList.length">
             <ul class="video-list">
-                <li class="video" v-for="video of videoList" :key="video.id">
+                <li class="video" v-for="video of newVideoList" :key="video.id">
                     <div class="poster">
                         <img :src="video.poster" :alt="video.title">
                         <div class="info">
                             <div class="play">
-                                <svg id="icon-bofangshu" viewBox="0 0 1024 1024">
-                                    <path
-                                        d="M800 128H224C134.4 128 64 198.4 64 288v448c0 89.6 70.4 160 160 160h576c89.6 0 160-70.4 160-160V288c0-89.6-70.4-160-160-160z m96 608c0 54.4-41.6 96-96 96H224c-54.4 0-96-41.6-96-96V288c0-54.4 41.6-96 96-96h576c54.4 0 96 41.6 96 96v448z">
-                                    </path>
-                                    <path
-                                        d="M684.8 483.2l-256-112c-22.4-9.6-44.8 6.4-44.8 28.8v224c0 22.4 22.4 38.4 44.8 28.8l256-112c25.6-9.6 25.6-48 0-57.6z">
-                                    </path>
-                                </svg>
+                                <svg id="icon-bofangshu" viewBox="0 0 1024 1024"><path d="M800 128H224C134.4 128 64 198.4 64 288v448c0 89.6 70.4 160 160 160h576c89.6 0 160-70.4 160-160V288c0-89.6-70.4-160-160-160z m96 608c0 54.4-41.6 96-96 96H224c-54.4 0-96-41.6-96-96V288c0-54.4 41.6-96 96-96h576c54.4 0 96 41.6 96 96v448z"></path><path d="M684.8 483.2l-256-112c-22.4-9.6-44.8 6.4-44.8 28.8v224c0 22.4 22.4 38.4 44.8 28.8l256-112c25.6-9.6 25.6-48 0-57.6z"></path></svg>
                                 {{ video.play }}
                             </div>
                             <div class="rank" v-if="video.rank">
-                                <svg viewBox="0 0 1024 1024">
-                                    <path
-                                        d="M800 128H224C134.4 128 64 198.4 64 288v448c0 89.6 70.4 160 160 160h576c89.6 0 160-70.4 160-160V288c0-89.6-70.4-160-160-160z m96 608c0 54.4-41.6 96-96 96H224c-54.4 0-96-41.6-96-96V288c0-54.4 41.6-96 96-96h576c54.4 0 96 41.6 96 96v448z">
-                                    </path>
-                                    <path
-                                        d="M240 384h64v64h-64zM368 384h384v64h-384zM432 576h352v64h-352zM304 576h64v64h-64z">
-                                    </path>
-                                </svg>
+                                <svg viewBox="0 0 1024 1024"><path d="M800 128H224C134.4 128 64 198.4 64 288v448c0 89.6 70.4 160 160 160h576c89.6 0 160-70.4 160-160V288c0-89.6-70.4-160-160-160z m96 608c0 54.4-41.6 96-96 96H224c-54.4 0-96-41.6-96-96V288c0-54.4 41.6-96 96-96h576c54.4 0 96 41.6 96 96v448z"></path><path d="M240 384h64v64h-64zM368 384h384v64h-384zM432 576h352v64h-352zM304 576h64v64h-64z"></path></svg>
                                 {{ video.rank }}
                             </div>
                         </div>
@@ -173,99 +142,112 @@
                 </li>
             </ul>
         </div>
-        <!-- 底部区域 -->
-        <div class="footer">
-            <p>哔哩哔哩 沪ICP备13002172号-3</p>
-            <p>信息网络传播视听节目许可证：0910417</p>
+        <!-- footer区域 -->
+        <div class="footer" v-if="videoList.length === count">
+            <p>信息网络传播视听节目许可证：0910417</p> 
+            <p>网络文化经营许可证 沪网文【2019】3804-274号</p> 
+            <p>广播电视节目制作经营许可证：（沪）字第01248号</p> 
+            <p>增值电信业务经营许可证 沪B2-20100043</p>
         </div>
     </div>
     <script src="./vue.js"></script>
     <script src="./axios.js"></script>
     <script src="./request.js"></script>
     <script>
+        // 1、图片 2、iconfont 3、svg（矢量图，不失真）
         const vm = new Vue({
             el: '#app',
             data: {
                 navList: [],
-                navHide: true,
                 navActiveIndex: 0,
+                navShow: false,
                 bannerList: [],
-                bannerActiveIndex: 0,
-                bannerWidth: 350,
                 bannerStyle: {
-                    left: 0,
-                    transition: 'left .3s',
+                    width: 0,
+                    left: 0
                 },
-                videoOldList: [],
-                videoCount: 0,
-                getVideo: true
+                bannerWidth: 350,
+                bannerIndex: 0,
+                videoList: [],
+                getVideo: true,
+                count: 0
             },
             computed: {
-                videoList() {
-                    return this.videoOldList.map(ele => {
-                        ele.play = ele.play > 10000 ? ele.play / 10000 + '万' : ele.play;
-                        ele.rank = ele.rank > 10000 ? ele.rank / 10000 + '万' : ele.rank;
+                newVideoList() {
+                    return this.videoList.map(ele => {
+                        ele.play = ele.play > 10000 ? ele.play / 1000 + '万' : ele.play;
+                        ele.rank = ele.rank > 10000 ? ele.rank / 1000 + '万' : ele.rank;
                         return ele;
                     })
                 }
             },
             methods: {
-                activeChange(index) {
+                activeChange(index, navIndex) {
                     this.navActiveIndex = index;
+                    navIndex === 2 && this.showNav();
                 },
                 showNav() {
-                    this.navHide = !this.navHide;
+                    this.navShow = !this.navShow;
                 },
                 autoMove() {
                     setTimeout(() => {
-                        if (this.bannerActiveIndex === 0) {
-                            this.bannerStyle.transition = 'left .3s';
-                        }
-                        this.bannerActiveIndex++;
-                        this.bannerStyle.left = -this.bannerActiveIndex * this.bannerWidth + 'px';
+                        this.bannerIndex === 0 ? this.bannerStyle.transition = 'left .3s' : '';
+                        this.bannerIndex++;
+                        this.bannerStyle.left = -this.bannerWidth * this.bannerIndex + 'px';
                     }, 1500);
                 },
-                handleTransitionEnd() {
-                    if (this.bannerActiveIndex === 3) {
-                        this.bannerActiveIndex = 0;
+                handelTransition() {
+                    if (this.bannerIndex === this.bannerList.length - 1) {
+                        this.bannerIndex = 0;
                         this.bannerStyle.left = 0;
-                        this.bannerStyle.transition = 'none';
+                        this.bannerStyle.transition = 'none'
                     }
+                    // this.bannerIndex = this.bannerIndex % (this.bannerList.length - 1);
+                    // console.log(this.bannerIndex)
                     this.autoMove();
                 },
-                handleScroll(e) {
-                    const { scrollHeight, offsetHeight, scrollTop } = e.target;
+                handelScroll(e) {
+                    // console.dir(e.target);
+                    const { scrollHeight, scrollTop, offsetHeight } = e.target;
                     const toBottomHeight = scrollHeight - offsetHeight - scrollTop;
-                    const videoLength = this.videoList.length;
-                    if (videoLength === this.videoCount) {
+                    if (this.videoList.length === this.count) {
                         return;
                     }
                     if (toBottomHeight < 200 && this.getVideo) {
                         this.getVideo = false;
-                        axios.get('video', {
+                        axios.get('/video', {
                             params: {
                                 start: this.videoList.length,
                                 offset: 12
                             }
-                        }).then(res => {
-                            this.videoOldList.push(...res.data);
+                        }).then(resp => {
+                            this.videoList.push(...resp.data);
                             this.getVideo = true;
                         })
                     }
                 },
                 getData() {
                     axios.all([
-                        axios.get('nav'),
-                        axios.get('banner'),
-                        axios.get('video', {
+                    axios.get('/nav'),
+                    axios.get('/banner'),
+                    axios.get('/video', {
                             params: {
                                 start: 0,
                                 offset: 12
                             }
                         })
                     ]).then(axios.spread((navRes, bannerRes, videoRes) => {
+                        // this.navList = navRes;
                         this.initNavList(navRes);
+                        
+                        // const lastBanner = {...bannerRes[0]};
+                        // lastBanner.id = Math.floor(Math.random() * 10000000);
+                        // this.bannerList = [...bannerRes, lastBanner];
+                        // this.bannerStyle.width = this.bannerWidth * this.bannerList.length + 'px';
                         this.initBannerList(bannerRes);
+
+                        // this.videoList = videoRes.data;
+                        // this.count = videoRes.count;
                         this.initVideoList(videoRes);
                     }))
                 },
@@ -273,22 +255,42 @@
                     this.navList = navRes;
                 },
                 initBannerList(bannerRes) {
-                    const lastBan = { ...bannerRes[0] };
-                    lastBan.id = Math.floor(Math.random() * 10000000);
-                    this.bannerList = [...bannerRes, lastBan];
+                    const lastBanner = {...bannerRes[0]};
+                    lastBanner.id = Math.floor(Math.random() * 10000000);
+                    this.bannerList = [...bannerRes, lastBanner];
+                    this.bannerStyle.width = this.bannerWidth * this.bannerList.length + 'px';
                 },
                 initVideoList(videoRes) {
-                    this.videoOldList = videoRes.data;
-                    this.videoCount = videoRes.count;
+                    this.videoList = videoRes.data;
+                    this.count = videoRes.count;
                 }
             },
-            created() {
+            created () {
                 this.getData();
+                // axios.get('/nav').then(resp => {
+                //     this.navList = resp;
+                // }),
+                // axios.get('/banner').then(resp => {
+                //     const lastBanner = {...resp[0]};
+                //     lastBanner.id = Math.floor(Math.random() * 10000000);
+                //     this.bannerList = [...resp, lastBanner];
+                //     this.bannerStyle.width = this.bannerWidth * this.bannerList.length + 'px';
+                // }),
+                // axios.get('/video', {
+                //     params: {
+                //         start: 0,
+                //         offset: 12
+                //     }
+                // }).then(resp => {
+                //     this.videoList = resp.data;
+                //     this.count = resp.count;
+                // })
             },
-            mounted() {
+            mounted () {
                 this.autoMove();
             }
         });
+        // space-around
     </script>
 </body>
 
