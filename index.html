@@ -215,7 +215,7 @@
                     }
                     if (toBottomHeight < 200 && this.getVideo) {
                         this.getVideo = false;
-                        axios.get('/video', {
+                        axios.get('video', {
                             params: {
                                 start: this.videoList.length,
                                 offset: 12
@@ -228,9 +228,9 @@
                 },
                 getData() {
                     axios.all([
-                    axios.get('/nav'),
-                    axios.get('/banner'),
-                    axios.get('/video', {
+                    axios.get('nav'),
+                    axios.get('banner'),
+                    axios.get('video', {
                             params: {
                                 start: 0,
                                 offset: 12
