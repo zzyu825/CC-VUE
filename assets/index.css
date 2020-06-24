@@ -166,7 +166,7 @@
 .banner-box .banner-list {
   position: absolute;
   left: 0;
-  width: calc(350px * 4);
+  /* width: calc(350px * 4); */
   transition: left .3s;
 }
 
