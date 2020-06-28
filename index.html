@@ -6,45 +6,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./assets/index.css">
 </head>
-
 <body>
     <div id="app">
-        <video-list :video-list="videoList"></video-list>
+        <!-- <div class="video-box">
+            <ul class="video-list">
+                <video-item 
+                    v-for="item of videoList"
+                    :src="item.poster" 
+                    :play="item.play"
+                    :rank="item.rank"
+                    :title="item.title"
+                    :msg="msg"
+                >
+                </video-item>
+                <video-item 
+                    v-for="item of videoList"
+                    v-bind=item
+                    sub-title="hello!"
+                    :key="item.id"
+                >
+                </video-item>
+            </ul>
+        </div> -->
+        <video-list></video-list>
     </div>
     <script src="./vue.js"></script>
     <script src="./axios.js"></script>
     <script>
+        // Vue.component('video-list', {
+        //     template: `
+        //     <div class="video-box">
+        //         <ul class="video-list">
+        //             <li class="video" v-for="item of videoList">
+        //                 <div class="poster">
+        //                     <img :src="item.poster" :alt="item.title">
+        //                     <div class="info">
+        //                         <div class="play">{{ item.play }}</div>
+        //                         <div class="rank">{{ item.rank }}</div>
+        //                     </div>
+        //                 </div>
+        //                 <div class="title">{{ item.title }}</div>
+        //             </li>
+        //         </ul>
+        //     </div>    
+        //     `,
+        //     data() {
+        //         return {
+        //             videoList: []
+        //         }
+        //     },
+        //     created () {
+        //         axios.get('https://developer.duyiedu.com/vue/bz/video', {
+        //             params: {
+        //                 start: 0,
+        //                 offset: 12
+        //             }
+        //         }).then(resp => {
+        //             this.videoList = resp.data.data;
+        //         })
+        //     }
+        // })
         Vue.component('video-list', {
-            props: ['videoList'],
             template: `
-                        <div class="video-list">
-                            <video-item
-                                v-for="video in videoList"
-                                v-bind="video"
-                            ></video-item>
-                        </div>
-                    `
-        });
+            <div class="video-box">
+                <ul class="video-list">
+                    <video-item
+                        v-for="item of videoList"
+                        :key="item.id"
+                        v-bind=item
+                        :msg="msg"
+                        SubTitle="abc"
+                    ></video-item>
+                </ul>
+            </div>    
+            `,
+            data() {
+                return {
+                    videoList: [],
+                    msg: 123,
+                }
+            },
+            created () {
+                axios.get('https://developer.duyiedu.com/vue/bz/video', {
+                    params: {
+                        start: 0,
+                        offset: 12
+                    }
+                }).then(resp => {
+                    this.videoList = resp.data.data;
+                })
+            }
+        })
+        // v-bind=item
+        // v-bind={poster: '', play: '', rank: ''}
+        // :poster="item.poster" :play="item.play"
         Vue.component('video-item', {
-            props: ['poster', 'play', 'rank', 'title'],
+            props: ['poster', 'play', 'rank', 'title', 'msg', 'SubTitle'],
             template: `
-                        <div class="video-item">
-                            <div class="poster">
-                                <img :src="poster" alt="">
-                                <div class="info">
-                                <div class="play">{{ play }}</div>
-                                <div class="rank">{{ rank }}</div>
-                                </div>
-                            </div>
-                            <div class="title">{{ title }}</div>
+                <li class="video">
+                    <div class="poster">
+                        <img :src="poster" :alt="title">
+                        <div class="info">
+                            <div class="play">{{ play }}</div>
+                            <div>{{ SubTitle }}</div>
+                            <div class="rank">{{ rank }}</div>
                         </div>
-                    `
-        });
+                    </div>
+                    <div class="title">{{ title }}{{ msg }}</div>
+                </li>
+            `
+        })
         const vm = new Vue({
-            el: "#app",
+            el: '#app',
             data: {
+                msg: 'hello vue',
                 videoList: []
             },
             created () {
@@ -53,12 +130,12 @@
                         start: 0,
                         offset: 12
                     }
-                }).then(res => {
-                     this.videoList = res.data.data
+                }).then(resp => {
+                    this.videoList = resp.data.data;
                 })
             }
-
-        })
+        });
+        // prop
     </script>
 </body>
 
