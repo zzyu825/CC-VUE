@@ -7,142 +7,166 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
-
 <body>
     <div id="app">
-        <div :style="{fontSize: postFontSize + 'em'}">
-            <!-- <blog-list 
-                v-for="item of blogList"
-                :key="item.id"
-                :item="item"
-                @click="postFontSize += 0.1"
-                @large-text="postFontSize += 0.1"
-            ></blog-list> -->
-            <!-- <blog-list 
-                v-for="item of blogList"
-                :key="item.id"
-                :item="item"
-                @click="postFontSize += 0.1"
-                @large-text="postFontSize += $event"
-            ></blog-list> -->
-            <!-- <blog-list 
-                v-for="item of blogList"
-                :key="item.id"
-                :item="item"
-                @click="postFontSize += 0.1"
-                @large-text="changeFontSize"
-            ></blog-list> -->
+        <!-- <blog-post 
+            :data="posts" 
+            :style="{fontSize: postFont + 'em'}"
+            @enlarge-text="postFont += $event"
+            @click.native="postFont += 0.1"
+        >
+        </blog-post> -->
+        <!-- <base-input @focus.native="onfocus"></base-input> -->
+        <!-- <base-input @focus="onfocus" @blur="onblur"></base-input> -->
 
-            <!-- <base-input @focus.native="onFocus" @blur.native="onBlur"></base-input> -->
-            <!-- <base-input @focus="onFocus" @blur="onBlur"></base-input> -->
+        <!-- <base-input1 :value="msg" @input="msg = $event"></base-input1> -->
+        <!-- <base-input1 v-model="msg"></base-input1> -->
+        <!-- <base-input2 v-model="check"></base-input2>
+        <p>{{ check }}</p> -->
 
-            <!-- <input :value="val" @input="val = $event.target.value"> -->
-            <!-- <base-input1 :value="val" @change="val = $event"></base-input1> -->
-            <!-- <base-input1 v-model="val"></base-input1> -->
-            <!-- <base-input2 v-model="checked"></base-input2> -->
+        <!-- <base-div v-model="num"></base-div>
+        <p>{{ num }}</p> -->
 
-            <!-- <base-input3 :value="val" @update:value="val = $event"></base-input3> -->
-            <!-- <base-input3 :value.sync="val"></base-input3> -->
-            <base-input3 v-bind.sync="obj"></base-input3>
-        </div>
+        <!-- <base-input3 :value="num" @update:value="num = $event"></base-input3> -->
+        <base-input3 :value.sync="num" :val.sync="msg"></base-input3>
+        <p>{{ num }}</p>
+        <p>{{ msg }}</p>
     </div>
     <script src="./vue.js"></script>
     <script>
-        // Vue.component('blog-list', {
-        //     props: {
-        //         item: Object
-        //     },
-        //     template: `
-        //         <div>
-        //             <h3>{{ item.title }}</h3>
-        //             <h5>{{ item.content }}</h5>
-        //             <button @click="$emit('large-text', 0.2)">放大字号</button>
-        //         </div>
-        //     `
-        // });
+        // 组件监听事件 博文组件
+        // 自定义事件
+        // $emit触发
+        // 组件中的事件，没有事件对象
+        // 组件上绑定原生事件 .native
+        // $listeners属性
+        // 组件中的v-model，也是语法糖 相当于绑定的是value属性并且监听的是input事件 
+        // model
+        // .sync
+        Vue.component('blog-post', {
+            props: {
+                data: {
+                    type: Array,
+                    required: true
+                }
+            },
+            template: `
+                <div>
+                    <div class="blog-post" v-for="item of data" :key="item.id">
+                        <h3>{{ item.title }}</h3>
+                        <button @click="$emit('enlarge-text', 0.2)">放大字体</button>
+                        <div>{{ item.content }}</div>
+                    </div>
+                </div>
+            `
+        })
         // Vue.component('base-input', {
-        //     // template: `
-        //     //     <input type="text"/>
-        //     // `
+        //     methods: {
+        //         onfocus() {
+        //             console.log('获取焦点');
+        //         }
+        //     },
         //     mounted () {
-        //         console.log(this.$listeners)
+        //         console.log(this.$listeners);
         //     },
-        //     template: `
-        //         <label>
-        //             姓名：
-        //             <input type="text" v-on="$listeners"/>
-        //         </label>
-        //     `
+        //     // template: `<input type="text" @focus="onfocus"/>`
+        //     // template: `<input type="text" />`,
+        //     template: `<label>
+        //         姓名：
+        //         <input type="text" v-on="$listeners" />
+        //     </label>`
         // })
-        // Vue.component('base-input1', {    
+        // Vue.component('base-input1', {
         //     props: {
-        //         value: String
+        //         value: {
+        //             type: String,
+        //             required: true
+        //         }
         //     },
-        //     template: `
-        //         <input type="text" 
-        //             :value="value" 
-        //             @input="$emit('change', $event.target.value)" />
-        //     `
-        // })
-        // Vue.component('base-input2', {  
+        //     template: `<input type="text" :value="value" @input="$emit('input', $event.target.value)"/>`
+            
+        // });
+        // Vue.component('base-input2', {
         //     model: {
         //         prop: 'checked',
         //         event: 'change'
         //     },
         //     props: {
-        //         checked: Boolean
+        //         checked: {
+        //             type: Boolean,
+        //             required: true
+        //         }
         //     },
-        //     // template: `
-        //     //     <input type="checkbox" 
-        //     //         :checked="checked" 
-        //     //         @input="$emit('change', $event.target.checked)" />
-        //     // `
+        //     template: `<input type="radio" :checked="checked" @change="$emit('change', $event.target.checked)"/>`
+        // });
+        // Vue.component('base-div', {
+        //     model: {
+        //         prop: 'num',
+        //         event: 'change'
+        //     },
+        //     props: {
+        //         // value: {
+        //         //     type: [String, Number],
+        //         //     required: true
+        //         // }
+        //         num: {
+        //             type: [String, Number],
+        //             required: true
+        //         }
+        //     },
+        //     template: `<div @click="$emit('change', 1)">{{num}}</div>`
         // })
         Vue.component('base-input3', {
             props: {
-                value: String
+                value: {
+                    type: [String, Number],
+                    required: true
+                },
+                val: {
+                    type: [String, Number],
+                    reuired: true
+                }
             },
-            template: `
-                <input type="text" 
-                    :value="value" 
-                    @input="$emit('update:value', $event.target.value)" />
-            `
+            template: `<input @input="$emit('update:value', $event.target.value)" :value="value" @change="$emit('update:val', $event.target.value)"/>`
         })
         const vm = new Vue({
             el: '#app',
             data: {
-                blogList: [
+                posts: [
                     {
-                        title: '标题',
-                        content: '内容1',
+                        title: '标题1',
+                        content: '正文内容1',
+                        id: 0
+                    },
+                    {
+                        title: '标题2',
+                        content: '正文内容2',
                         id: 1
                     },
                     {
-                        title: '标题',
-                        content: '内容1',
+                        title: '标题3',
+                        content: '正文内容3',
                         id: 2
                     }
                 ],
-                postFontSize: 1,
-                val: '123',
-                checked: false,
-                obj: {
-                    value: '123'
-                }
+                postFont: 1,
+                msg: 'abc',
+                check: false,
+                num: 2
             },
             methods: {
-                changeFontSize(e) {
+                change(e) {
                     // console.log(e);
-                    this.postFontSize += e
+                    this.postFont += e;
                 },
-                onFocus() {
-                    console.log('获取焦点')
+                onfocus() {
+                    console.log('获取焦点');
                 },
-                onBlur() {
-                    console.log('失去焦点')
+                onblur() {
+                    console.log('失去焦点');
                 }
             }
-        })
+        });
     </script>
 </body>
 
