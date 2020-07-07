@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import BaseDemo from './components/BaseDemo5';
+import BaseDemo from './components/BaseDemo4';
 
 export default {
   name: 'app',
