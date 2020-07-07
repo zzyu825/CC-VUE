@@ -1,11 +1,10 @@
 <template>
   <div class="demo">
-    <button @click="show = !show">click</button>
+    <button @click="handleClick">click</button>
     <transition
-      enter-active-class="animated bounceInRight"
-      leave-active-class="animated bounceOutDown"
+      mode="in-out"
     >
-      <div class="box" v-if="show">hello world</div>
+      <div class="box" :key="keyName">hello {{ keyName }}</div>
     </transition>
   </div>
 </template>
@@ -14,37 +13,64 @@
 export default {
   data () {
     return {
-      show: true,
+      keyName: 'world'
     }
-  }
+  },
+  methods: {
+    handleClick () {
+      const isWorld = this.keyName === 'world';
+      this.keyName = isWorld ? 'shanshan' : 'world';
+    },
+  },
 }
 </script>
 
 <style scoped>
+
+.demo {
+  margin-left: 100px;
+}
+
 button {
-  margin-bottom: 10px;
+  display: block;
 }
 
 .box {
-  width: 100px;
-  height: 100px;
-  margin-bottom: 10px;
-  line-height: 100px;
+  position: absolute;
+  display: inline-block;
+  width: 150px;
+  height: 30px;
+  margin-top: 10px;
+  line-height: 30px;
   text-align: center;
-  border: 1px solid red;
-  color: red;
+  background-color: gray;
+  color: #fff;
 }
 
-
-.enter {
+.v-enter,
+.v-leave-to {
   opacity: 0;
+  transform: translateX(80px);
 }
 
-.enter-active {
-  transition: opacity 3s;
+.v-enter-active,
+.v-leave-active {
+  transition: all .3s;
 }
 
-.enter-to {
+.v-enter-to  {
   opacity: 1;
+  transform: translateX(0px);
 }
+
+.v-leave {
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+.v-leave-to {
+  opacity: 0;
+  transform: translateX(-80px);
+}
+
 </style>

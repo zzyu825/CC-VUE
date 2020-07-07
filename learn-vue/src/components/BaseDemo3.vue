@@ -1,8 +1,10 @@
 <template>
   <div class="demo">
-    <button @click="show = !show">click</button>
-    <transition>
-      <div class="box" v-if="show">hello world</div>
+    <button @click="handleClick">click</button>
+    <transition
+      mode="out-in"
+    >
+      <div :key="keyName">hello {{ keyName }}</div>
     </transition>
   </div>
 </template>
@@ -11,49 +13,33 @@
 export default {
   data () {
     return {
-      show: true,
+      keyName: 'world'
     }
-  }
+  },
+  methods: {
+    handleClick () {
+      const isWorld = this.keyName === 'world';
+      this.keyName = isWorld ? 'shanshan' : 'world';
+    },
+  },
 }
 </script>
 
 <style scoped>
-button {
-  margin-bottom: 10px;
+.v-enter,
+.v-leave-to {
+  opacity: 0;
 }
 
-.box {
-  width: 100px;
-  height: 100px;
-  margin-bottom: 10px;
-  line-height: 100px;
-  text-align: center;
-  border: 1px solid red;
-  color: red;
-}
-
-.v-enter-active {
-  animation: animate 1s;
-}
-
+.v-enter-active,
 .v-leave-active {
-  animation: animate 1s reverse;
+  transition: all .3s;
 }
 
-@keyframes animate {
-  0% {
-    opacity: 0;
-    transform: translateX(400px) scale(1);
-  }
-
-  50% {
-    opacity: .5;
-    transform: translateX(200px) scale(1.5);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
+.v-enter-to,
+.v-leave {
+  opacity: 1;
 }
+
+
 </style>
