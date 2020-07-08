@@ -2,9 +2,9 @@
   <div id="app">
 
     <div class="nav-box">
-      <div class="logo" @click="handleClick">渡一教育</div>
+      <div class="logo">渡一教育</div>
       <div class="nav-list">
-        <router-link to="/home">首页</router-link>
+        <router-link to="/">首页</router-link>
         <router-link to="/learn">课程学习</router-link>
         <router-link to="/student">学员展示</router-link>
         <router-link to="/about">关于</router-link>
@@ -12,9 +12,7 @@
       </div>
     </div>
     <div class="container">
-      <transition>
-        <router-view></router-view>
-      </transition>
+      <router-view></router-view>
     </div>
   </div>
 </template>
@@ -23,34 +21,15 @@
 
 export default {
   name: 'app',
-  components: {
-  },
-  methods: {
-    handleClick () {
-      this.$router.push('/home');
-    }
-  },
+  components: {},
+  mounted () {
+    console.log(this.$router);
+    console.log(this.$route);
+  }
 }
 </script>
 
 <style scoped>
-#app {
-  /* overflow-x: hidden; */
-}
-/* enter */
-.v-enter {
-  transform: translateX(1000px);
-}
-
-.v-enter-active {
-  transition: all .3s;
-}
-
-.v-enter-to {
-  transform: translateX(0px);
-}
-
-
 .nav-box {
   display: flex;
   justify-content: space-between;
@@ -69,7 +48,7 @@ export default {
   text-decoration: none;
 }
 
-.nav-list a.router-link-active {
+.nav-list a.router-link-exact-active {
   font-weight: bold;
 }
 
