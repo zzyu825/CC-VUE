@@ -77,7 +77,7 @@ slots()的结果为：
 
 children的结果为：
 ```
-[<div>div</div>, <p>p</p>, template]
+[<p>p</p>, template]
 ```
 
 
