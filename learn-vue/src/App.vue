@@ -1,32 +1,27 @@
 <template>
   <div id="app">
-    <button @click="show = !show">click</button>
-    <!-- <transition-single>
-      <div v-if="show">hello world</div>
-    </transition-single>
+    <button @click="show = true">click</button>
+    <async-cmp-1 v-if="show" />
+    <async-cmp-2 v-if="show" />
 
-    <transition-single>
-      <div v-if="show">hello shanshan</div>
-    </transition-single> -->
-
-    <transition-single>
-      <div key="world" v-if="show">hello shanshan</div>
-      <div key="shanshan" v-else>hello world</div>
-    </transition-single>
   </div>
 </template>
 
 <script>
-import TransitionSingle from './components/TransitionSingle';
+// import AsyncCmp from './components/AsyncCmp';
+
+// import('')
 
 export default {
   name: 'app',
   components: {
-    TransitionSingle
+    AsyncCmp1: () => import(/* webpackChunkName: "async" */  './components/AsyncCmp1'),
+    AsyncCmp2: () => import(/* webpackChunkName: "async" */  './components/AsyncCmp2'),
+
   },
   data () {
     return {
-      show: true,
+      show: false,
     }
   },
 }
