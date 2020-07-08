@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from './views/Home';
+import auth from './utils/auth';
 
 Vue.use(VueRouter);
 
@@ -30,8 +31,11 @@ const routes = [
     path: '/about',
     component: () => import('./views/About'),
     beforeEnter (to, from, next) {
-      console.log('beforeEnter');
       next();
+    },
+    meta: {
+      requiresLogin: true,
+      backAsk: true,
     },
   },
   {
@@ -41,6 +45,10 @@ const routes = [
       return {
         name: 'academic',
       }
+    },
+    meta: {
+      requiresLogin: true,
+      backAsk: true,
     },
     children: [
       // {
@@ -78,38 +86,45 @@ const routes = [
     }),
     component: () => import('./views/Question'),
   },
+  {
+    path: '/login',
+    component: () => import('./views/Login'),
+  }
 ];
 
 const router = new VueRouter({
   mode: 'history',
   routes,
+  scrollBehavior (to, from, savedPosition) {
+    if(savedPosition) {
+      return savedPosition;
+    } else {
+      if(to.hash) {
+        return { selector: to.hash }
+      } else {
+        return {x: 0, y: 0}
+      }
+    }
+  }
 });
 
 router.beforeEach((to, from, next) => {
-  // console.log(to);
-  // console.log(from);
-  // next(false);
-  // if(to.path === '/student') {
-  //   next('/about');
-  //   // this.$router.push()
-  // } else {
-    console.log('beforeEach');
+  const isRequiresLogin = to.matched.some(item => item.meta.requiresLogin);
+
+  if(isRequiresLogin) {
+    const isLogin = auth.isLogin();
+    if(isLogin) {
+      next();
+    } else {
+      const isToLogin = window.confirm('要登录后才可以浏览，要去登录吗？');
+
+      isToLogin ? next('/login') : next(false);
+    }
+  } else {
     next();
-  // }
-  // next(new Error('不让跳转'));
-})
+  }
 
-router.beforeResolve((to, from, next) => {
-  console.log('beforeResolve');
-  next();
-})
-
-router.afterEach((to, from) => {
-  console.log('afterEach');
-})
-
-router.onError(err => {
-  console.log(err.message);
-})
+  // const from.meta.backAsk
+});
 
 export default router;
