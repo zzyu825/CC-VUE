@@ -24,18 +24,24 @@ export default new Vuex.Store({
     studentJuveniles: state => state.studentList.filter(student => student.age < 18),
   },
   mutations: {
-    [COUNT_INCREMENT] (state, { num }) { 
-      // console.log(payload);
-      setTimeout(() => {
-        state.count += num;
-      }, 1000)
-    },
     [CHANGE_OBJ] (state) {
       Vue.set(state.obj, 'b', 10);
-      // state.obj = {...state.obj, b: 10};
     },
     [UPDATE_MSG] (state, { value }) {
       state.msg = value;
+    },
+    [COUNT_INCREMENT] (state, { num }) { 
+      state.count += num;
+    },
+  },
+  actions: {
+    countIncrement (context, payload) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          context.commit(COUNT_INCREMENT, payload);
+          resolve();
+        }, 1000)
+      })
     }
   },
 });
