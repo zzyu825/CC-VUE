@@ -1,64 +1,32 @@
-# Vuex_Action
-Action 类似于 mutation，不同在于：
+# Vuex_Module
+由于使用单一状态树，应用的所有状态会集中到一个比较大的对象。当应用变得非常复杂时，store 对象就有可能变得相当臃肿。
 
-- Action 提交的是 mutation，而不是直接变更状态。
-- Action 可以包含任意异步操作
-
-Action 函数接受一个与 store 实例具有相同方法和属性的 context 对象，因此你可以调用 context.commit 提交一个 mutation，或者通过 context.state 和 context.getters 来获取 state 和 getters:
+为了解决以上问题，Vuex 允许我们将 store 分割成模块（module）。每个模块拥有自己的 state、mutation、action、getter。
 
 ```js
-const store = new Vuex.Store({
-  state: {
-    count: 0
-  },
-  mutations: {
-    increment (state) {
-      state.count++
-    }
-  },
-  actions: {
-    increment (context) {
-      context.commit('increment')
-    }
-  }
-})
-```
-
-## 分发Action
-```js
-store.dispatch('increment')
-```
-虽然和mutation差不多，但是在action中，可以执行异步操作，但是mutation中不行！！！
-```js
-actions: {
-  incrementAsync ({ commit }) {
-    setTimeout(() => {
-      commit('increment')
-    }, 1000)
-  }
+modules: {
+  a,
+  b
 }
 ```
+- 获取 state：this.\$store.state.moduleName.xxx
+- 获取 getter：this.\$store.getters.xxx
+- 提交 mutation：this.\$store.commit('xxx');
+- 分发 action：this.\$store.dispatch('xxx');
+- 可以通过mapXXX的方式拿到getters、mutations、actions，但是不能拿到state，如果想通过这种方式获得state，需要加命名空间。
 
+## 命名空间
+可以通过添加 namespaced: true 的方式使其成为带命名空间的模块。
+- 获取 state：this.\$store.state.moduleName.xxx
+- 获取 getter：this.\$store.['moduleName/getters'].xxx
+- 提交 mutation：this.\$store.commit('moduleName/xxx');
+- 分发 action：this.\$store.dispatch('moduleName/xxx');
+- 可以通过mapXXX的方式获取到state、getters、mutations、actions。
 
-## 组合 Action
-Action 通常是异步的，那么如何知道 action 什么时候结束呢？
-```js
-actions: {
-  actionA ({ commit }) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        commit('someMutation')
-        resolve()
-      }, 1000)
-    })
-  }
-}
-```
-```js
-store.dispatch('actionA').then(() => {
-  // ...
-})
-```
+## 模块的局部状态
 
-## Vuex 管理模式
-![](https://vuex.vuejs.org/vuex.png)
+对于模块内部的 mutation 和 getter，接收的第一个参数是模块的局部状态对象。
+
+同样，对于模块内部的 action，局部状态通过 context.state 暴露出来，根节点状态则为 context.rootState。
+
+对于模块内部的 getter，根节点状态会作为第三个参数暴露出来。
