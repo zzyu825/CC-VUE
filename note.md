@@ -1,49 +1,61 @@
-# VueRouter_过渡特效-滚动行为
+# Vuex_State
+Vuex是vue的状态管理工具，为了更方便的实现多个组件共享状态。
 
-## 过渡特效
-<router-view> 是基本的动态组件，所以我们可以用 <transition> 组件给它添加一些过渡效果。
-
-```html
-<transition>
-  <router-view></router-view>
-</transition>
+## 安装
+```js
+npm install vuex --save
 ```
 
-## 滚动行为
-使用前端路由，当切换到新路由时，想要页面滚到顶部，或者是保持原先的滚动位置，就像重新加载页面那样。vue-router 可以自定义路由切换时页面如何滚动。
-
-注意: 这个功能只在支持 history.pushState 的浏览器中可用。
-
-当创建一个 Router 实例，你可以提供一个 scrollBehavior 方法：
-
+## 使用
 ```js
-const router = new VueRouter({
-  routes: [...],
-  scrollBehavior (to, from, savedPosition) {
-    // return 期望滚动到哪个的位置
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
+  state: {
+    count: 0
   }
+})
+
+new Vue({
+  store,
 })
 ```
 
-scrollBehavior 方法接收 to 和 from 路由对象。第三个参数 savedPosition 当且仅当 popstate 导航 (通过浏览器的 前进/后退 按钮触发) 时才可用。
+## State
+单一状态树，使用一个对象就包含了全部的应用层级状态。
 
-scrollBehavior 返回滚动位置的对象信息，长这样：
+### 在Vue组件中获得Vuex状态
+Vuex 通过store 选项，提供了一种机制将状态从跟组件“注入”到每一个子组件中（调用Vue.use(Vuex)）。
 
-- { x: number, y: number }
-- { selector: string, offset? : { x: number, y: number }} (offset 只在 2.6.0+ 支持)
-
-```js
-scrollBehavior (to, from, savedPosition) {
-  return { x: 0, y: 0 }
-}
+通过在根实例中注册store选项，该store实例会注入到根组件下的所有子组件中，且子组件能通过this.\$store访问。
+```html
+<div class="home">
+  {{ $store.state.count }}
+</div>
 ```
 
+### mapState 辅助函数
+当一个组件需要获取多个状态时，将这些状态都声明为计算属性会有些重复和冗余。为了解决这个问题，我们可以使用mapState辅助函数帮助我们生成计算属性：
+
 ```js
-scrollBehavior (to, from, savedPosition) {
-  if (to.hash) {
-    return {
-      selector: to.hash // selector 的 值为 hash值
-    }
-  }
-}
+import { mapState } from 'vuex';
+
+computed: {
+  ...mapState(['count']),
+},
+
+```
+使用不同的名字：
+```js
+computed: {
+  ...mapState({
+    storeCount: state => state.count,
+    // 简写
+    storeCount: 'count', // 等同于 state => state.count
+  }),
+},
+
 ```

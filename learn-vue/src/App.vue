@@ -21,11 +21,8 @@
 
 export default {
   name: 'app',
-  components: {},
-  mounted () {
-    console.log(this.$router);
-    console.log(this.$route);
-  }
+  components: {
+  },
 }
 </script>
 
