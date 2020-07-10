@@ -3,7 +3,6 @@
         <button @click="show = !show">点击</button>
         <transition
             :css="false"
-            appear
             @before-enter="beforeEnter"
             @enter="enter"
             @after-enter="afterEnter"
@@ -15,7 +14,6 @@
 </template>
 
 <script>
-import 'animate.css';
 
 export default {
     data() {
@@ -30,8 +28,11 @@ export default {
             el.style.transform = 'translateX(200px)';
         },
         enter(el, done) {
-            // done.canceled = true;
-            // done参数写了，没有使用，动画结束后会默认执行取消动画，如果使用了，动画结束后则会执行动画完成后的钩子函数
+            // 为了保证after-enter异步执行，done参数必须加，这样动画结束后才会调用afterEnter
+            // done参数加了之后，如果希望在动画结束后处理一些逻辑，则在合适位置手动调用下done
+            // 如果设置了done.canceled，同时调用了done，取消动画会失效
+
+            // done.canceled = true; // 开启下一次动画时，会调用enterCancelled，标记取消动画
             const timer = setInterval(() => {
                 this.x -= 2;
                 el.style.transform = `translateX(${this.x}px)`;
@@ -42,11 +43,12 @@ export default {
             }, 10);
         },
         afterEnter() {
-            console.log(1);
+            console.log('afterEnter');
             this.x = 200;
         },
         enterCancelled() {
-            console.log('cancel')
+            console.log('cancel');
+            // 设置状态，做其他逻辑处理
         }
     }
 }
