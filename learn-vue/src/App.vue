@@ -2,7 +2,7 @@
   <div id="app">
 
     <div class="nav-box">
-      <div class="logo">渡一教育</div>
+      <div class="logo">CC教育</div>
       <div class="nav-list">
         <router-link to="/home">首页</router-link>
         <router-link to="/learn">课程学习</router-link>
