@@ -2,8 +2,8 @@
   <div id="app">
 
     <div class="nav-box">
-      <div class="logo" @click="handleClick">渡一教育</div>
-      <!-- <router-link to="/home" tag="div" class="logo">渡一教育</router-link> -->
+      <div class="logo" @click="handleClick">CC教育</div>
+      <!-- <router-link to="/home" tag="div" class="logo">CC教育</router-link> -->
 
       <div class="nav-list">
         <router-link to="/home">首页</router-link>
