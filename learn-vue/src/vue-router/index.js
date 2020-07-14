@@ -2,6 +2,9 @@ import install from './install';
 import History from './history';
 
 class VueRouter {
+
+  static install = install;
+
   constructor (options) {
     this.routeMap = this.createRouteMap(options.routes || []);
     this.history = new History();
@@ -44,6 +47,6 @@ class VueRouter {
   }
 }
 
-VueRouter.install = install;
+// VueRouter.install = install;
 
 export default VueRouter;
