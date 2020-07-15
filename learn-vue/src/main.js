@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router';
+import router from './router'
 import axios from './http';
-import "./assets/reset.css";
+import './mixin'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+
 Vue.prototype.$axios = axios;
 
 new Vue({
   render: h => h(App),
-  router,
+  router
 }).$mount('#app')

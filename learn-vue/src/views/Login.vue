@@ -1,39 +1,38 @@
 <template>
-  <div class="login">
-    <button @click="handleClick">{{ btnText }}</button>
-  </div>
+    <div class="login">
+        <button @click="handel">{{ btnText }}</button>
+    </div>
 </template>
 
 <script>
-import auth from '../utils/auth';
-
+import Login from '../utils/login'
 export default {
-  data () {
-    return {
-      isLogin: auth.isLogin(),
-    }
-  },
-  methods: {
-    handleClick () {
-      if(this.isLogin) {
-        auth.cancelLogin();
-      } else {
-        auth.login();
-        this.goBack();
-      }
-      this.isLogin = !this.isLogin;
+    data() {
+        return {
+            isLogin: Login.isLogin()
+        }
     },
-    goBack () {
-      const isGoBack = window.confirm('登录成功，要回到原来的页面吗？');
-      if(isGoBack) {
-        this.$router.go(-1);
-      }
+    methods: {
+        handel() {
+            if (this.isLogin) {
+                login.cancelLogin();
+            } else {
+                Login.login();
+                this.goBack();
+            }
+            this.isLogin = !this.isLogin;
+        },
+        goBack() {
+            const flag = window.confirm('登录成功，是否要回到原来的页面？');
+            if (flag) {
+                this.$router.go(-1);
+            }
+        }
     },
-  },
-  computed: {
-    btnText () {
-      return this.isLogin ? '取消登录' : '登录';
+    computed: {
+        btnText() {
+            return this.isLogin ? '取消登录' : '登录'
+        }
     }
-  },
 }
 </script>

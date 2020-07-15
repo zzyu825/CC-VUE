@@ -1,41 +1,40 @@
 <template>
-  <div>
-    <ul>
-      <router-link 
-        tag="li"
-        v-for="question in questionList"
-        :key="question.id"
-        :to="{ name: 'question', params: { id: question.id }}"
-      >
-        {{ question.title }}
-      </router-link>
-    </ul>
-  </div>
+    <div class="academic">
+        <ul>
+            <router-link 
+                tag="li"
+                v-for="question of questionList"
+                :key="question.id"
+                :to="{ name: 'question', params: { id: question.id } }"
+            >
+                {{ question.title }}
+            </router-link>
+        </ul>
+    </div>
 </template>
 
 <script>
 export default {
-  data () {
-    return {
-      questionList: []
+    data() {
+        return {
+            questionList: []
+        }
+    },
+    created() {
+        this.$axios.get('/question').then(res => {
+            this.questionList = res;
+        });
     }
-  },
-  mounted () {
-    this.$axios.get('/question').then(res => {
-      this.questionList = res;
-    });
-  }
 }
 </script>
 
 <style scoped>
 li {
-  margin-bottom: 15px;
-  cursor: pointer;
+    margin-bottom: 15px;
+    cursor: pointer;
 }
-
 li:hover {
-  text-decoration: underline;
-  color: #3385ff;
+    text-decoration: underline;
+    color: #3385ff;
 }
 </style>

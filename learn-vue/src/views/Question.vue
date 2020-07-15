@@ -1,121 +1,122 @@
 <template>
-  <div class="question" v-if="question">
-    <div class="main">问题：{{ question.title }}</div>
-
-    <div class="other">
-      <div 
-        v-for="other in otherQuestionList" 
-        :key="other.id"
-        :class="other.type"
-        :title="other.title"
-        @click="handleClick(other.id)"
-      >
-        {{ other.title }}
-      </div>
+    <div class="question" v-if="question">
+        <div class="main">问题：{{ question.title }}</div>
+        <div class="other">
+            <div
+                v-for="item of otherQuestinoList"
+                :key="item.id"
+                :class="item.type"
+                :title="item.title"
+                @click="handel(item.id)"
+            >
+                {{ item.title }}
+            </div>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
 export default {
-  beforeRouteUpdate (to, from, next) {
-    next();
-  },
-  // beforeRouteLeave (to, from, next) {
-  //   // const isGo = window.confirm('真的要走吗，不再看看了？');
-  //   // isGo ? next() : next(false);
-  // },
-  props: {
-    id: {
-      type: [String, Number],
+    beforeRouteUpdate(to, from, next) {
+        // console.log(this);
+        // console.log('beforeRouteUpdate');
+        next();
     },
-  },
-  data () {
-    return {
-      question: null,
-    }
-  },
-  mounted () {
-    
-  },
-  computed: {
-    otherQuestionList () {
-      const arr = [];
-
-      if(this.question.prev) {
-        const { prev, prevId } = this.question;
-
-        arr.push({
-          type: 'prev',
-          title: prev,
-          id: prevId
-        })
-      }
-
-      if(this.question.next) {
-        const { next, nextId } = this.question;
-
-        arr.push({
-          type: 'next',
-          title: next,
-          id: nextId
-        })
-      }
-
-      return arr;
-    },
-  },
-  methods: {
-    handleClick (id) {
-
-      this.$router.push({
-        name: 'question',
-        params: {
-          id,
+    // beforeRouteLeave(to, from, next) {
+    //     const flag = window.confirm('确定要离开吗？');
+    //     flag ? next() : next(false);
+    // },
+    props: {
+        id: {
+            type: [String, Number],
+            required: true
+        },
+        name: {
+            type: String,
+            default: 'question'
         }
-      });
     },
-    getData () {
-      // const { id } = this.$route.params;
-      const { id } = this;
+    data() {
+        return {
+            question: null
+        }
+    },
+    created() {
+        // this.getData();
+    },
+    computed: {
+        otherQuestinoList() {
+            const arr = [];
+            if (this.question.prev) {
+                const { prev, prevId } = this.question;
+                arr.push({
+                    title: prev,
+                    id: prevId,
+                    type: 'prev'
+                })
+            }
+            if (this.question.next) {
+                const { next, nextId } = this.question;
+                arr.push({
+                    title: next,
+                    id: nextId,
+                    type: 'next'
+                })
+            }
+            return arr;
+        }
+    },
+    watch: {
+        '$route': {
+            handler() {
+                this.getData();
+            },
+            immediate: true
+        }
+    },
+    methods: {
+        getData() {
+            // const { id } = this.$route.params;
+            // console.log(this.$route);
+            // console.log(this.id, this.name);
+            const { id } = this;
+            this.$axios.get(`/question/${id}`).then(res => {
+                this.question = res;
+            });
+        },
+        handel(id) {
+            // const { name } = this.$route;
+            const { name } = this;
 
-      this.$axios.get(`/question/${id}`).then(res => {
-        this.question = res;
-      })
-    },
-  },
-  watch: {
-    '$route': {
-      handler () {
-        this.getData();
-      },
-      immediate: true,
-    } 
-  }
+            this.$router.push({
+                name,
+                params: {
+                    id
+                }
+            })
+        }
+    }
 }
 </script>
 
 <style scoped>
 .main {
-  margin-bottom: 200px;
+    margin-bottom: 200px;
 }
-
 .prev {
-  float: left;
+    float: left;
 }
-
 .next {
-  float: right;
+    float: right;
 }
-
 .prev,
 .next {
-  width: 200px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: #3385ff;
-  text-decoration: underline;
-  cursor: pointer;
+    width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #3385ff;
+    text-decoration: underline;
+    cursor: pointer;
 }
 </style>
