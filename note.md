@@ -22,7 +22,7 @@ getters: {
 }
 ```
 ```js
-this.$store.addCount(3);
+this.$store.getters.addCount(3);
 ```
 
 ## mapGetters 辅助函数
