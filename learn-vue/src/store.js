@@ -1,11 +1,13 @@
-import Vue from 'vue'
+import Vue from 'vue';
 import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-    count: 0,
-    studentList: [],
-  }
+    state: {
+      count: 0,
+      a: 1,
+      b: 2,
+      studentList: []
+    }
 });
