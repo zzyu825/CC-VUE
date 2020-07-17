@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-
     <div class="nav-box">
-      <div class="logo">渡一教育</div>
+      <div class="logo" @click="handel">CC教育</div>
+      <!-- <router-link class="logo" to="/home">CC教育</router-link> -->
       <div class="nav-list">
-        <router-link to="/">首页</router-link>
+        <router-link to="/home">首页</router-link>
         <router-link to="/learn">课程学习</router-link>
         <router-link to="/student">学员展示</router-link>
         <router-link to="/about">关于</router-link>
@@ -12,7 +12,10 @@
       </div>
     </div>
     <div class="container">
-      <router-view></router-view>
+      <transition>
+        <router-view></router-view>
+      </transition>
+      <router-view name="student"></router-view>
     </div>
   </div>
 </template>
@@ -21,41 +24,66 @@
 
 export default {
   name: 'app',
-  components: {
-  },
+  methods: {
+    handel() {
+      // console.log(this.$router);
+      // console.log(this.$route);
+      // ['/a', '/b', '/home']
+      // ['/a', '/home']
+      this.$router.push('home');
+      
+      // this.$router.replace('home');
+      // this.$router.go(0);
+    }
+  }
 }
 </script>
 
 <style scoped>
-.nav-box {
-  display: flex;
-  justify-content: space-between;
-  height: 60px;
-  line-height: 60px;
-  background-color: #3385ff
+@import url('./assets/reset.css');
+
+#app {
+  overflow: hidden;
 }
 
+.nav-box {
+  display: flex;
+  justify-content: space-around;
+  height: 60px;
+  line-height: 60px;
+  background-color: #3385ff;
+}
 .nav-box .logo {
   color: #fff;
 }
-
-.nav-list a {
+.nav-box a {
+  text-decoration: none;
+}
+.nav-box .nav-list a {
   margin-left: 40px;
   color: #fff;
   text-decoration: none;
 }
-
-.nav-list a.router-link-exact-active {
+/* .nav-list a.abc {
+  font-weight: bold;
+} */
+.nav-list a.router-link-active {
   font-weight: bold;
 }
-
 .container {
   margin-top: 60px;
-}
-
-.nav-box,
-.container {
   padding-left: 200px;
   padding-right: 200px;
 }
+
+.v-enter {
+  transform: translateX(1000px);
+}
+.v-enter-active {
+  transition: all .3s;
+}
+.v-enter-to {
+  transform: translateX(0px);
+}
 </style>
+
