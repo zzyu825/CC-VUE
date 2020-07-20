@@ -1,9 +1,9 @@
 export default {
-  state: {
-    studentList: [],
-  },
-  getters: {
-    studentLength: state => state.studentList.length,
-    studentJuveniles: state => state.studentList.filter(student => student.age < 18),
-  },
+    state: {
+        studentList: [],
+    },
+    getters: {
+        studentCount: state => state.studentList.length,
+        studentFilter: state => state.studentList.filter(stu => stu.age < 18)
+    }
 }

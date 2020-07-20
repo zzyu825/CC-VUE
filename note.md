@@ -21,7 +21,7 @@ modules: {
 - 获取 getter：this.\$store.['moduleName/getters'].xxx
 - 提交 mutation：this.\$store.commit('moduleName/xxx');
 - 分发 action：this.\$store.dispatch('moduleName/xxx');
-- 可以通过mapXXX的方式获取到state、getters、mutations、actions。
+- 通过mapXXX的方式获取到state、getters、mutations、actions，需要加第一个参数为模块名。
 
 ## 模块的局部状态
 
