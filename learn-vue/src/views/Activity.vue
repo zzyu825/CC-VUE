@@ -10,6 +10,12 @@
     </div>
 </template>
 
+<script>
+export default {
+    nextFlag: true
+}
+</script>
+
 <style scoped>
 a {
     margin-right: 10px;
